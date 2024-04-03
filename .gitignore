@@ -1,1 +1,7 @@
 data/*
+ids/contrib/development_configs/certificates/key_c2.pem
+ids/contrib/development_configs/certificates/key_lm.pem
+ids/contrib/development_configs/certificates/key_nm.pem
+ids/deployment/config/certificates/key_c2.pem
+ids/deployment/config/certificates/key_lm.pem
+ids/deployment/config/certificates/key_nm.pem
