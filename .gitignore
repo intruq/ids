@@ -11,3 +11,5 @@ ids/deployment/config/certificates/key_nm.pem
 /ids/replay_csv/mosaikrtu/__pycache__
 /ids/contrib/node_modules
 /ids/replay_csv/mosaikrtu/dvcd/__pycache__
+ids/contrib/development_configs/certificates/*
+ids/replay_csv/data/*
