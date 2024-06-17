@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<DVCD label="MV substation 2">
+    <ip>0.0.0.0</ip>
+    <port>10503</port>
+    <identity>
+        <vendor name="UTwente 0" url="https://www.utwente.nl" />
+        <product name="PoorSecuritySubstation" code="PSS" model="PSS 1.0" />
+        <version major="0" minor="5" />
+    </identity>
+
+    
+    <!-- Sensors  -->
+    <reg type="hr" index="0" label="sensor_v13" dt="64bit_float">0</reg>
+    <reg type="hr" index="4" label="sensor_v01" dt="64bit_float">0</reg>
+    <reg type="hr" index="8" label="sensor_v02" dt="64bit_float">0</reg>
+    <reg type="hr" index="12" label="sensor_v03" dt="64bit_float">0</reg>
+    <reg type="hr" index="16" label="sensor_v04" dt="64bit_float">0</reg>
+    <reg type="hr" index="20" label="sensor_v05" dt="64bit_float">0</reg>
+    <reg type="hr" index="24" label="sensor_v06" dt="64bit_float">0</reg>
+    <reg type="hr" index="28" label="sensor_v09" dt="64bit_float">0</reg>
+    <reg type="hr" index="32" label="sensor_v10" dt="64bit_float">0</reg>
+    <reg type="hr" index="36" label="sensor_v11" dt="64bit_float">0</reg>
+    <reg type="hr" index="40" label="sensor_v12" dt="64bit_float">0</reg>
+    <reg type="hr" index="44" label="sensor_v14" dt="64bit_float">0</reg>
+
+    <reg type="hr" index="48" label="sensor_pq_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="52" label="sensor_pq_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="56" label="sensor_pq_3" dt="64bit_float">0</reg>
+
+    <!-- Max Sensors -->
+    <reg type="hr" index="60" label="max_v13" dt="64bit_float">0</reg>
+    <reg type="hr" index="64" label="max_v01" dt="64bit_float">0</reg>
+    <reg type="hr" index="68" label="max_v02" dt="64bit_float">0</reg>
+    <reg type="hr" index="72" label="max_v03" dt="64bit_float">0</reg>
+    <reg type="hr" index="76" label="max_v04" dt="64bit_float">0</reg>
+    <reg type="hr" index="80" label="max_v05" dt="64bit_float">0</reg>
+    <reg type="hr" index="84" label="max_v06" dt="64bit_float">0</reg>
+    <reg type="hr" index="88" label="max_v09" dt="64bit_float">0</reg>
+    <reg type="hr" index="92" label="max_v10" dt="64bit_float">0</reg>
+    <reg type="hr" index="96" label="max_v11" dt="64bit_float">0</reg>
+    <reg type="hr" index="100" label="max_v12" dt="64bit_float">0</reg>
+    <reg type="hr" index="104" label="max_v14" dt="64bit_float">0</reg>
+
+    <reg type="hr" index="108" label="max_pq_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="112" label="max_pq_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="116" label="max_pq_3" dt="64bit_float">0</reg>
+
+    <code>mosaikrtu/conf/rtu_logic_good.py</code>
+</DVCD>

@@ -96,15 +96,6 @@ class HeartbeatEventListener:
             self.nodes[event_node_id] = event.Time
             # if event_node_id == "demo_nm_1": # testing purposes
 
-        # check the timestamps. If a monitor hasn't sent a heartbeat for the past 3 seconds, log an error message
-        # and trigger a reconfiguration of border region
-        # print("##############################")
-        # for node, time in self.nodes.items():
-        #    print(node)
-        #    print(time)
-        #    print("+++++++++++++++++++++++++++")
-        # print("##############################")
-
         for key in list(self.nodes.keys()):
             # print(datetime.datetime.now(tz=datetime.timezone.utc) - self.nodes[key].replace(tzinfo=datetime.timezone.utc))
             if datetime.datetime.now(tz=datetime.timezone.utc) - self.nodes[key].replace(tzinfo=datetime.timezone.utc) \

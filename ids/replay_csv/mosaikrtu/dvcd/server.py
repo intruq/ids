@@ -63,7 +63,8 @@ class Server(threading.Thread):
         """
         Stop the server.
         """
-        self.do_stop.set()
         self.srv.server_close()
+        self.do_stop.set()
         self.srv.shutdown()
+        
         print("[*] Stopping server.")

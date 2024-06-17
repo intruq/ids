@@ -25,7 +25,7 @@ def generate_ssl_certificate(monitor_id, path, rootca_cert, rootca_key):
 
     # write the certificate into the file given
     with open(cert_file, 'w+b') as f:
-        f.write(cert.public_bytes(serialization.Encoding.PEM))
+        f.write(cert.public_bytes(serialization.Encoding.DER))
 
     # write the private key into the file given
     with open(key_file, 'w+b') as f:
@@ -101,8 +101,8 @@ def create_certificate(monitor_id, cert_key, rootca_cert, rootca_key):
         .issuer_name(issuer) \
         .public_key(cert_key.public_key()) \
         .serial_number(x509.random_serial_number()) \
-        .not_valid_before(datetime.datetime.utcnow()) \
-        .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(hours=1)) \
+        .not_valid_before(datetime.datetime.now() - datetime.timedelta(days=1)) \
+        .not_valid_after(datetime.datetime.now() + datetime.timedelta(days=100)) \
         .sign(cert_key, hashes.SHA256(), default_backend())
 
     return cert

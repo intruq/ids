@@ -1,8 +1,11 @@
+import sys
 import os
 import subprocess
 from time import sleep
 from dotenv import dotenv_values
+import warnings
 
+warnings.filterwarnings('ignore', message='.*cryptography', )
 
 def fix_filepaths(dict):
     for i in dict:
@@ -12,42 +15,47 @@ def fix_filepaths(dict):
     return dict
 
 def init():
+    
+
+    warnings.filterwarnings('ignore', message='.*cryptography', )
+
     env = fix_filepaths(dotenv_values("development_configs/c2_template.env"))
-    subprocess.Popen(["python3", "../implementation/c2_server.py"],
+    subprocess.Popen(["python", "./../implementation/c2_server.py"],
                      env={
                          **os.environ,
                          **env,
                      })
 
     env = fix_filepaths(dotenv_values("development_configs/lm_1_template.env"))
-    subprocess.Popen(["python3", "../implementation/local_monitor.py"],
+    subprocess.Popen(["python", "../implementation/local_monitor.py"],
                      env={
                          **os.environ,
                          **env,
                      })
 
     env = fix_filepaths(dotenv_values("development_configs/lm_2_template.env"))
-    subprocess.Popen(["python3", "../implementation/local_monitor.py"],
+    subprocess.Popen(["python", "../implementation/local_monitor.py"],
                      env={
                          **os.environ,
                          **env,
                      })
 
     env = fix_filepaths(dotenv_values("development_configs/nm_1_template.env"))
-    subprocess.Popen(["python3", "../implementation/neighborhood_monitor.py"],
+    subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
                      env={
                          **os.environ,
                          **env,
                      })
 
     env = fix_filepaths(dotenv_values("development_configs/nm_2_template.env"))
-    subprocess.Popen(["python3", "../implementation/neighborhood_monitor.py"],
+    subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
                      env={
                          **os.environ,
                          **env,
                      })
 
-    subprocess.Popen(["python3", "webserver.py"], cwd="../visualization")
+    subprocess.Popen(["python", "webserver.py"], cwd="../visualization")
+    
     while True:
         sleep(1)
 

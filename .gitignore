@@ -5,3 +5,9 @@ ids/contrib/development_configs/certificates/key_nm.pem
 ids/deployment/config/certificates/key_c2.pem
 ids/deployment/config/certificates/key_lm.pem
 ids/deployment/config/certificates/key_nm.pem
+/ids/test/Lib
+/ids/test
+/ids/implementation/ids_lib
+/ids/replay_csv/mosaikrtu/__pycache__
+/ids/contrib/node_modules
+/ids/replay_csv/mosaikrtu/dvcd/__pycache__

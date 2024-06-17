@@ -1,5 +1,0 @@
-Authors
-=======
-
-The mosaik web visualization was created by Stefan Scherfke and Gunnar
-Jeddeloh.

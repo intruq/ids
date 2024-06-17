@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<DVCD label="LV Substation 1">
+    <ip>0.0.0.0</ip>
+    <port>10502</port>
+    <identity>
+        <vendor name="UTwente 0" url="https://www.utwente.nl" />
+        <product name="PoorSecuritySubstation" code="PSS" model="PSS 1.0" />
+        <version major="0" minor="5" />
+    </identity>
+
+    <!-- Sensors  -->
+    <reg type="hr" index="0" label="sensor_v_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="4" label="sensor_v_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="8" label="sensor_v_3" dt="64bit_float">0</reg>
+    <reg type="hr" index="12" label="sensor_v_noise" dt="64bit_float">0</reg>
+
+    <reg type="hr" index="16" label="sensor_c_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="20" label="sensor_c_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="24" label="sensor_c_3" dt="64bit_float">0</reg>
+    <reg type="hr" index="28" label="sensor_c_noise" dt="64bit_float">0</reg>
+
+    <reg type="hr" index="32" label="sensor_thd_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="36" label="sensor_thd_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="40" label="sensor_thd_3" dt="64bit_float">0</reg>
+
+    <!-- Max Sensors -->
+    <reg type="hr" index="44" label="max_v_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="48" label="max_v_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="52" label="max_v_3" dt="64bit_float">0</reg>
+
+    <reg type="hr" index="56" label="max_c_1" dt="64bit_float">0</reg>
+    <reg type="hr" index="60" label="max_c_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="64" label="max_c_3" dt="64bit_float">0</reg>
+
+    <code>mosaikrtu/conf/rtu_logic_good.py</code>
+</DVCD>

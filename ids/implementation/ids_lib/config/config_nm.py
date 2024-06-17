@@ -9,6 +9,7 @@ class NMConfig:
     opc_domain = None  # Domain used inside OPC to uniquely identify the ids
 
     nm_opc_address = None  # Address of the local OPC Server of this Config
+    nm_opc_port = None
 
     c2_cert = None  # Certificate of the c2 Server
     lm_cert = None  # Certificate of the LM
@@ -20,9 +21,9 @@ class NMConfig:
     def __init__(self):
         pass
 
-    def default_config(self):
-        self.nm_opc_address = f"opc.tcp://localhost:10808/freeopcua/server/"  # local OPC server url
-        self.uuid = uuid.uuid4()
+    def default_config(self, nm_opc_port):
+        self.nm_opc_address = f"opc.tcp://localhost:{nm_opc_port}/freeopcua/server/"  # local OPC server url
+        self.uuid = str(uuid.uuid4())
 
         self.c2_address = "opc.tcp://127.0.0.1:4840/freeopcua/server/"
         self.opc_domain = "http://itsis-blackout.ids/"

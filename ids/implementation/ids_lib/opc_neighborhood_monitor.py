@@ -3,8 +3,8 @@ import logging
 import queue
 import sys
 import time
-
 import psutil
+
 from asyncua import Client, Server, ua
 from asyncua.common.structures104 import new_struct, new_struct_field
 from asyncua.crypto.security_policies import SecurityPolicyBasic256Sha256
@@ -127,7 +127,7 @@ class NM:
         await server.init()
         server.set_endpoint(self.config.nm_opc_address)
         server.set_match_discovery_client_ip(True)
-        server.socket_address = ["0.0.0.0", 10809]
+        server.socket_address = ["0.0.0.0", self.config.nm_opc_port]
         logger.info(f"NM serving OPC Server on: {self.config.nm_opc_address}")
 
         idx = await server.register_namespace(self.config.opc_domain)

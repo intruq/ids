@@ -9,6 +9,7 @@ class LMConfig:
     opc_domain = None  # Domain used inside OPC to uniquely identify the ids
 
     lm_opc_address = None  # Adress of the local OPC Server of this Config
+    lm_opc_port = None
 
     c2_cert = None  # Certificate of the c2 Server
     nm_cert = None  # Certificate of the NM certificates
