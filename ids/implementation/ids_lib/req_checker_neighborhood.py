@@ -42,6 +42,7 @@ class ReqCheckerNeighborhood:
         """Check all requirements of the neighborhood scope"""
         try:
             await asyncio.gather(
+                self._checkReq1(lm_address),
                 self.__logger.error("No requirement checks implemented.")
             )
         except Exception as e:
@@ -49,6 +50,7 @@ class ReqCheckerNeighborhood:
 
     async def get_data_from_lm(self, lm_address):
         """Get the latest data values from the specified local monitor."""
+        print("Versuche Daten zu lesen")
         data_node = None
         for lm in self.__client_lms:
             if lm["url"] == lm_address:
@@ -58,3 +60,11 @@ class ReqCheckerNeighborhood:
         except Exception:
             lm_data = None
         return lm_data
+    
+    async def _checkReq1(self, lm_address):
+        data = await self.get_data_from_lm(lm_address)
+        print(data)
+        print("____")
+        #tmp = json.loads(br.region_definition)
+      #  print(tmp)
+        self.__logger.error("Test requirement!")

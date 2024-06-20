@@ -19,6 +19,7 @@ def run_nm():
     config.cert = os.getenv('IDS_CERT')
     config.private_key = os.getenv('IDS_PRIVATE_KEY')
     config.private_key_password = os.getenv('IDS_PRIVATE_KEY_PASSWORD')
+    config.client_lm_address = os.getenv('IDS_CLIENT_ADDRESS')
 
     with open(os.getenv('IDS_BR_CONFIG_FILE'), 'r') as file:
         config.br_config = file.read()

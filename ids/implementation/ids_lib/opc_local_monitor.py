@@ -421,7 +421,7 @@ class LM:
 
                         #print duration of the last evaluation cycle in seconds
                         time_elapsed = time.clock() - time_elapsed
-                        logger.info("Last cycle took (sec) %f", time_elapsed)
+                       # logger.info("Last cycle took (sec) %f", time_elapsed)
                 except Exception as err:
                     logger.error("Exception in local monitor: %s", err)
                 # Send new logging messages to opc

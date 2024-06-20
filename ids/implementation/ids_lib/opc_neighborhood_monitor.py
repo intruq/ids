@@ -61,7 +61,7 @@ class NM:
         self.opc_nm_ref = None
         self.opc_nm_usage_ref = None
         self.client_c2 = None
-        self.client_lms = []
+        self.client_lms = config.client_lm_address # auch hier muss doch sicherlich was einegstöpselt werden 
         self.idx = 0
         self.config = config
         self.__br = json.loads(self.config.br_config)
@@ -70,7 +70,7 @@ class NM:
         self.violation_queue = queue.SimpleQueue()  # Queue for buffering violation messages until they are sent vio OPC
         self.isRegistered = False  # True if this NM has registered with the c2
 
-        self.lm_to_check = []
+        self.lm_to_check = [1,2] # das sollte doch bestimmt auch irgendwo her geladen werden? 
 
     async def __init(self):
         """Initialize NM by registering to c&c server"""
@@ -137,7 +137,7 @@ class NM:
         # Set up requirement checker
         global req_checker
         req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger)
-
+   
         # System related statistics
         opcNMType = await server.nodes.base_object_type.add_object_type(idx, "NeighborhoodMonitor")
         
@@ -231,6 +231,8 @@ class NM:
 
         # Store lm references to private collection
         self.client_lms.append({"lm": lm, "url": lm_url, "data_node": data_node, "usage_node": usage_node})
+        print("//////")
+        print(self.client_lms)
 
         # Create EventListener to listen to new sensor data
         handler = RTUDataEventListener()
@@ -246,7 +248,6 @@ class NM:
 
         # Register ourselves with LM to receive data
         res = await lm.call_method(f"{idx}:registerNM", self.uuid)
-        # TODO: Check status code
 
     # Register with GlobalMonitor
     async def __register_to_c2(self):
@@ -270,7 +271,7 @@ class NM:
 
         # Register ourselves as a NM looking for work
         c2 = await root.get_child(["0:Objects", f"{self.idx}:C2"])
-        # TODO: check if res is actually a success status code
+        
         res = await c2.call_method(f"{self.idx}:registerNM", self.uuid, self.config.nm_opc_address)
 
     async def refresh_config(self):
@@ -328,17 +329,17 @@ class NM:
 
             while True:
                 await self.__heartbeat_event_generator.trigger()
-
                 # Iterate over all LMs that have reported to have new data
                 if len(self.lm_to_check) > 0:
                     for lm in self.lm_to_check:
                         time_elapsed = time.clock()
-
+                        print("vor Test")
+                        print(lm) # aktuell ist das die Zahl, aber muss das eigentlich die adresse sein? 
                         await req_checker.check_requirements(lm)
                         await self._report_violation_via_opc(self.violation_queue)
 
                         time_elapsed = time.clock() - time_elapsed
-                        logger.info("Last cycle took %f", time_elapsed)
+                        #logger.info("Last cycle took %f", time_elapsed)
                     self.lm_to_check = []
                 # Publish log messages via OPC
                 await self._log_to_opc()
