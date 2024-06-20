@@ -62,7 +62,7 @@ class LM:
     async def __init(self) -> None:
         """Initialize LM. Register with c&c server and connect to RTU"""
         await self.__register_to_c2()
-        logger.info("finished initialization")
+        logger.info("LM: finished initialization")
 
     async def __start_opc_server(self) -> None:
         cert_user_manager = CertificateUserManager()
@@ -321,17 +321,17 @@ class LM:
         meters = self.__rtu_conf["meters"]
 
         try:
-            for s in switches:
+           # for s in switches:
                 # Get coil index from config file
-                co_index = int(s["co_index"])
+              #  co_index = int(s["co_index"])
                 # Read value at coil index from modbus
                 # Note: the length of a coil register is 1 byte
-                coil_data = self.__modbus_client.read_coils(co_index, 1, unit=1)
+             #   coil_data = self.__modbus_client.read_coils(co_index, 1, unit=1)
                 # Create new data object to store switch data
-                switch_data = ua.SwitchData()
-                switch_data.id = s["id"]
-                switch_data.value = coil_data.bits[:1]
-                opc_data.switches.append(switch_data)
+             #   switch_data = ua.SwitchData()
+             #   switch_data.id = s["id"]
+              #  switch_data.value = coil_data.bits[:1]
+              #  opc_data.switches.append(switch_data)
 
             for m in meters:
                 # Get holding registers indices from config file
@@ -349,6 +349,9 @@ class LM:
                 meter_data.current = decoder_current.decode_64bit_float()
                 meter_data.voltage = decoder_voltage.decode_64bit_float()
                 opc_data.meters.append(meter_data)
+                
+                #print(meter_data)
+               
 
             # Write new reading into data node
             await self.opc_lm_data_ref.write_value(opc_data)

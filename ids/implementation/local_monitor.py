@@ -1,6 +1,7 @@
 import asyncio
 import os
 import uuid
+import sys
 
 from ids_lib import opc_local_monitor
 from ids_lib.config.config_lm import LMConfig
@@ -23,6 +24,7 @@ def run_lm():
 
     with open(os.getenv('IDS_RTU_CONFIG_FILE'), 'r') as file:
         config.rtu_config = file.read()
+       # print(config.rtu_config)
 
     # Run monitor forever
     asyncio.run(opc_local_monitor.main(config))

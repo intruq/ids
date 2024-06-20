@@ -1,6 +1,7 @@
 import asyncio
 import os
 import uuid
+import sys
 
 from ids_lib import opc_neighborhood_monitor
 from ids_lib.config.config_nm import NMConfig
@@ -18,6 +19,11 @@ def run_nm():
     config.cert = os.getenv('IDS_CERT')
     config.private_key = os.getenv('IDS_PRIVATE_KEY')
     config.private_key_password = os.getenv('IDS_PRIVATE_KEY_PASSWORD')
+
+    with open(os.getenv('IDS_BR_CONFIG_FILE'), 'r') as file:
+        config.br_config = file.read()
+      
+
 
     # Run monitor forever
     asyncio.run(opc_neighborhood_monitor.main(config))

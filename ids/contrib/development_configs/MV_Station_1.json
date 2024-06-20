@@ -161,7 +161,7 @@
       "bus_id": "b11",
       "power_line_id": "branch_11",
       "s_current": 0.1,
-      "s_voltage": 11000,
+      "s_voltage": 11,
       "hr_index_voltage": "36",
       "hr_index_current": "0"
     },
@@ -170,7 +170,7 @@
       "bus_id": "b11",
       "power_line_id": "branch_11",
       "s_current": 0.1,
-      "s_voltage": 11000,
+      "s_voltage": 11,
       "hr_index_voltage": "40",
       "hr_index_current": "0"
     },
@@ -179,7 +179,7 @@
       "bus_id": "b11",
       "power_line_id": "branch_11",
       "s_current": 0.1,
-      "s_voltage": 11000,
+      "s_voltage": 11,
       "hr_index_voltage": "44",
       "hr_index_current": "0"
     }

@@ -15,16 +15,15 @@ def fix_filepaths(dict):
     return dict
 
 def init():
-    
-
-    warnings.filterwarnings('ignore', message='.*cryptography', )
 
     env = fix_filepaths(dotenv_values("development_configs/c2_template.env"))
     subprocess.Popen(["python", "./../implementation/c2_server.py"],
                      env={
                          **os.environ,
                          **env,
-                     })
+                     },  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    
 
     env = fix_filepaths(dotenv_values("development_configs/lm_1_template.env"))
     subprocess.Popen(["python", "../implementation/local_monitor.py"],
@@ -32,20 +31,29 @@ def init():
                          **os.environ,
                          **env,
                      })
-
+    
     env = fix_filepaths(dotenv_values("development_configs/lm_2_template.env"))
     subprocess.Popen(["python", "../implementation/local_monitor.py"],
                      env={
                          **os.environ,
                          **env,
                      })
+    
+    env = fix_filepaths(dotenv_values("development_configs/lm_3_template.env"))
+    subprocess.Popen(["python", "../implementation/local_monitor.py"],
+                     env={
+                         **os.environ,
+                         **env,
+                     })
+    
+   # sys.exit(0)
 
     env = fix_filepaths(dotenv_values("development_configs/nm_1_template.env"))
     subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
                      env={
                          **os.environ,
                          **env,
-                     })
+                     }  )
 
     env = fix_filepaths(dotenv_values("development_configs/nm_2_template.env"))
     subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
@@ -54,7 +62,15 @@ def init():
                          **env,
                      })
 
-    subprocess.Popen(["python", "webserver.py"], cwd="../visualization")
+
+    env = fix_filepaths(dotenv_values("development_configs/nm_3_template.env"))
+    subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
+                     env={
+                         **os.environ,
+                         **env,
+                     })
+
+    #subprocess.Popen(["python", "webserver.py"], cwd="../visualization")
     
     while True:
         sleep(1)

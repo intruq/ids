@@ -4,6 +4,7 @@ import queue
 import sys
 import time
 import psutil
+import json 
 
 from asyncua import Client, Server, ua
 from asyncua.common.structures104 import new_struct, new_struct_field
@@ -63,7 +64,7 @@ class NM:
         self.client_lms = []
         self.idx = 0
         self.config = config
-        self.__br = []  # border regions
+        self.__br = json.loads(self.config.br_config)
 
         self.log_queue = queue.SimpleQueue()  # Queue for buffering log messages until they can be sent via OPC
         self.violation_queue = queue.SimpleQueue()  # Queue for buffering violation messages until they are sent vio OPC
