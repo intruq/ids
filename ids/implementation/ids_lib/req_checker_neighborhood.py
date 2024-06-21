@@ -52,14 +52,15 @@ class ReqCheckerNeighborhood:
         """Get the latest data values from the specified local monitor."""
         print("Versuche Daten zu lesen")
         data_node = None
-        for lm in self.__client_lms:
-            if lm["url"] == lm_address:
-                data_node = lm["data_node"]
-        try:
-            lm_data = await data_node.read_value()
-        except Exception:
-            lm_data = None
-        return lm_data
+       # for lm in self.__client_lms:
+            #if lm["url"] == lm_address:
+       # data_node = lm_address["data_node"]
+       # print(data_node)
+     #   try:
+      #      lm_data = await data_node.read_value()
+      #  except Exception:
+    #        lm_data = None
+     #   return lm_data
     
     async def _checkReq1(self, lm_address):
         data = await self.get_data_from_lm(lm_address)

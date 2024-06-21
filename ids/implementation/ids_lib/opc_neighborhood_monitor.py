@@ -30,6 +30,7 @@ class C2EventListener:
     async def event_notification(self, event):
         msg = event.Message.Text
         if msg == "reconfigure":
+            print("START RECONFIGURATION")
             await nm.refresh_config()
         elif msg == "isRegistered":
             nm.isRegistered = True
@@ -62,6 +63,7 @@ class NM:
         self.opc_nm_usage_ref = None
         self.client_c2 = None
         self.client_lms = config.client_lm_address # auch hier muss doch sicherlich was einegstöpselt werden 
+        self.client_address_list = config.client_lm_address
         self.idx = 0
         self.config = config
         self.__br = json.loads(self.config.br_config)
@@ -134,6 +136,9 @@ class NM:
         idx = await server.register_namespace(self.config.opc_domain)
         self.__idx = idx
 
+        await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
+        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+        
         # Set up requirement checker
         global req_checker
         req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger)
@@ -191,10 +196,14 @@ class NM:
         self.__heartbeat_event_generator = await self.__server.get_event_generator(heartbeat_event)
         self.__heartbeat_event_generator.event.Message = 'Still alive'
         self.__heartbeat_event_generator.event.sender = self.config.uuid
+        
+        print("REGISTERING FORCE TO LM")
+    
 
 
     async def __register_to_lm(self, lm_url):
         """Register this nm to the given lm. """
+        print("REGISTERING TO LM")
         client_lm = Client(url=lm_url)
 
         await client_lm.set_security(
@@ -204,7 +213,7 @@ class NM:
             private_key_password=self.config.private_key_password,
             server_certificate=self.config.lm_cert
         )
-
+        print("TRYING TO CONNECT WITH LM!")
         # Connect with client
         while True:
             try:
@@ -212,9 +221,11 @@ class NM:
                 logger.info("NM connected to LM")
                 break
             except BaseException as e:
-                logger.error("Connection error while connecting to LM. Retrying in 5 seconds")
+                print(e)
+                logger.error("NM SHOUTS: Connection error while connecting to LM. Retrying in 5 seconds")
                 await asyncio.sleep(5)
-
+        print("WHY WAS THERE NO OUTPUT") 
+        
         # Load lm data type definitions
         await client_lm.load_data_type_definitions()
 
@@ -280,13 +291,14 @@ class NM:
             .get_child(["0:Objects", f"{self.idx}:{self.uuid}", f"{self.idx}:config"])
         config = await config_node.get_value()
         regions = config.regions
-        for br in regions:
-            self.__br.append(br)
-            lm_1_address = br.lm_1_address
-            lm_2_address = br.lm_2_address
+        # trying to get this code fixed 
+       # for br in regions:
+        ##   lm_1_address = br.lm_1_address
+          #  lm_2_address = br.lm_2_address
             # Register to new local monitors
-            await self.__register_to_lm(lm_1_address)
-            await self.__register_to_lm(lm_2_address)
+        await self.__register_to_lm("opc.tcp://0.0.0.0:10812/freeopcua/server/")
+        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+        print("registered with adresses")
 
     async def _log_to_opc(self):
         # Wait until we have registered with the c2 and before sending log messages
@@ -330,15 +342,19 @@ class NM:
             while True:
                 await self.__heartbeat_event_generator.trigger()
                 # Iterate over all LMs that have reported to have new data
-                if len(self.lm_to_check) > 0:
-                    for lm in self.lm_to_check:
-                        time_elapsed = time.clock()
-                        print("vor Test")
-                        print(lm) # aktuell ist das die Zahl, aber muss das eigentlich die adresse sein? 
-                        await req_checker.check_requirements(lm)
-                        await self._report_violation_via_opc(self.violation_queue)
+                if True: 
+                #if len(self.lm_to_check) > 0:
+                    print("before check")
+                    await req_checker.check_requirements(self.client_address_list)
+                    await self._report_violation_via_opc(self.violation_queue)
+                    #for lm in self.lm_to_check:
+                      #  time_elapsed = time.clock()
+                      #  print("vor Test")
+                      #  print(lm) # aktuell ist das die Zahl, aber muss das eigentlich die adresse sein? 
+                      #  await req_checker.check_requirements(lm)
+                    #    await self._report_violation_via_opc(self.violation_queue)
 
-                        time_elapsed = time.clock() - time_elapsed
+                     #   time_elapsed = time.clock() - time_elapsed
                         #logger.info("Last cycle took %f", time_elapsed)
                     self.lm_to_check = []
                 # Publish log messages via OPC
