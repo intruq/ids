@@ -104,6 +104,9 @@ class NM:
 
         await client_c2.load_data_type_definitions()
         await self.__register_to_c2()
+        await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
+        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+      
 
     async def __start_opc_server(self) -> None:
         """
@@ -119,6 +122,7 @@ class NM:
         self.__server.set_security_policy([ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt])
 
         await cert_user_manager.add_user(self.config.c2_cert, name="c2")
+        await cert_user_manager.add_user(self.config.lm_cert, name="lm")
 
         await server.load_certificate(self.config.cert)
         await server.load_private_key(self.config.private_key, self.config.private_key_password)
@@ -136,8 +140,8 @@ class NM:
         idx = await server.register_namespace(self.config.opc_domain)
         self.__idx = idx
 
-        await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
-        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+      #  await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
+      #  await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
         
         # Set up requirement checker
         global req_checker
@@ -197,14 +201,21 @@ class NM:
         self.__heartbeat_event_generator.event.Message = 'Still alive'
         self.__heartbeat_event_generator.event.sender = self.config.uuid
         
+        
         print("REGISTERING FORCE TO LM")
     
 
 
     async def __register_to_lm(self, lm_url):
+        
+         # Start the opc client and connect to c2 server
+        await self.__start_opc_client()
+        logger.info("finished initialization")
+
+    async def __start_opc_client(self) -> None:      
         """Register this nm to the given lm. """
         print("REGISTERING TO LM")
-        client_lm = Client(url=lm_url)
+        client_lm = Client(url=self.client_address_list)
 
         await client_lm.set_security(
             SecurityPolicyBasic256Sha256,
@@ -213,7 +224,6 @@ class NM:
             private_key_password=self.config.private_key_password,
             server_certificate=self.config.lm_cert
         )
-        print("TRYING TO CONNECT WITH LM!")
         # Connect with client
         while True:
             try:
@@ -224,7 +234,6 @@ class NM:
                 print(e)
                 logger.error("NM SHOUTS: Connection error while connecting to LM. Retrying in 5 seconds")
                 await asyncio.sleep(5)
-        print("WHY WAS THERE NO OUTPUT") 
         
         # Load lm data type definitions
         await client_lm.load_data_type_definitions()
@@ -241,9 +250,10 @@ class NM:
         usage_node = await root.get_child(["0:Objects", f"{idx}:LM", f"{idx}:usage"])
 
         # Store lm references to private collection
-        self.client_lms.append({"lm": lm, "url": lm_url, "data_node": data_node, "usage_node": usage_node})
+        self.client_lms.append({"lm": lm, "url": self.client_address_list, "data_node": data_node, "usage_node": usage_node})
         print("//////")
         print(self.client_lms)
+        sys.exit(0)
 
         # Create EventListener to listen to new sensor data
         handler = RTUDataEventListener()

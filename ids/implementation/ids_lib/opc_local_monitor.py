@@ -84,14 +84,17 @@ class LM:
         # set_match_discovery_client_ip - disables some automatic changes usually performed by the server
         await server.init()
         server.set_endpoint(self.config.lm_opc_address)
-        server.set_match_discovery_client_ip(True)
-        server.socket_address = [".0.0.0", self.config.lm_opc_port]
+        
+        #server.set_match_discovery_client_ip(True)
+        
+        server.socket_address = ["127.0.0.1", self.config.lm_opc_port]
         logger.info(f"LM serving OPC Server on: {self.config.lm_opc_address}")
 
         idx = await server.register_namespace(self.config.opc_domain)
+        self.__idx = idx
         # Define custom type: LocalMonitor
         opcLMType = await server.nodes.base_object_type.add_object_type(idx, "LocalMonitor")
-        self.__idx = idx
+       
 
         # Create data structure for switches
         switch_data, _ = await new_struct(server, idx, "SwitchData", [

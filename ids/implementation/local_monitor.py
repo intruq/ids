@@ -14,6 +14,7 @@ def run_lm():
     config.c2_address = os.getenv('IDS_C2_ADDRESS')
     config.opc_domain = os.getenv('IDS_OPC_DOMAIN')
     config.lm_opc_address = os.getenv('IDS_LM_OPC_ADDRESS')
+    config.lm_opc_port = os.getenv("IDS_LM_OPC_PORT")
     config.nm_cert = os.getenv('IDS_NM_CERT')
     config.c2_cert = os.getenv('IDS_C2_CERT')
     config.cert = os.getenv('IDS_CERT')
@@ -21,6 +22,8 @@ def run_lm():
     config.private_key_password = os.getenv('IDS_PRIVATE_KEY_PASSWORD')
     config.rtu_modbus_host = os.getenv('IDS_RTU_MODBUS_HOST')
     config.rtu_modbus_port = os.getenv('IDS_RTU_MODBUS_PORT')
+    config.label = "UT165957"
+    config.hostname = "UT165957"
 
     with open(os.getenv('IDS_RTU_CONFIG_FILE'), 'r') as file:
         config.rtu_config = file.read()
