@@ -22,6 +22,9 @@ class LMConfig:
 
     rtu_modbus_host = None  # Modbus hostname of the RTU to monitor
     rtu_modbus_port = None  # Modbus port of the RTU to monitor
+    
+    label = "UT165957"
+    hostname = label
 
     def __init__(self):
         pass

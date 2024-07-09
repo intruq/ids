@@ -62,8 +62,8 @@ class NM:
         self.opc_nm_ref = None
         self.opc_nm_usage_ref = None
         self.client_c2 = None
-        self.client_lms = config.client_lm_address # auch hier muss doch sicherlich was einegstöpselt werden 
-        self.client_address_list = config.client_lm_address
+        self.client_lms = [] # auch hier muss doch sicherlich was einegstöpselt werden 
+        self.client_address_list = config.client_address_list
         self.idx = 0
         self.config = config
         self.__br = json.loads(self.config.br_config)
@@ -77,10 +77,10 @@ class NM:
     async def __init(self):
         """Initialize NM by registering to c&c server"""
         # Start the opc client and connect to c2 server
-        await self.__start_opc_client()
+        await self.__start_opc_client_c2()
         logger.info("finished initialization")
 
-    async def __start_opc_client(self) -> None:
+    async def __start_opc_client_c2(self) -> None:
         client_c2 = Client(url=self.c2_address)
         self.client_c2 = client_c2
 
@@ -104,8 +104,8 @@ class NM:
 
         await client_c2.load_data_type_definitions()
         await self.__register_to_c2()
-        await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
-        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+        await self.__register_to_lm(self.client_address_list[0])
+        await self.__register_to_lm(self.client_address_list[1])
       
 
     async def __start_opc_server(self) -> None:
@@ -140,12 +140,13 @@ class NM:
         idx = await server.register_namespace(self.config.opc_domain)
         self.__idx = idx
 
-      #  await self.__register_to_lm("opc.tcp://127.0.0.1:10812/freeopcua/server/")
-      #  await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
+       # await self.__register_to_lm(self.client_address_list[0])
+        # await self.__register_to_lm(self.client_address_list[1])
+      
         
         # Set up requirement checker
         global req_checker
-        req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger)
+        req_checker = ReqCheckerNeighborhood(self.__br, self.client_address_list, self.violation_queue, logger)
    
         # System related statistics
         opcNMType = await server.nodes.base_object_type.add_object_type(idx, "NeighborhoodMonitor")
@@ -200,22 +201,17 @@ class NM:
         self.__heartbeat_event_generator = await self.__server.get_event_generator(heartbeat_event)
         self.__heartbeat_event_generator.event.Message = 'Still alive'
         self.__heartbeat_event_generator.event.sender = self.config.uuid
-        
-        
-        print("REGISTERING FORCE TO LM")
-    
-
 
     async def __register_to_lm(self, lm_url):
         
          # Start the opc client and connect to c2 server
-        await self.__start_opc_client()
+        await self.__start_opc_client(lm_url)
         logger.info("finished initialization")
 
-    async def __start_opc_client(self) -> None:      
+    async def __start_opc_client(self, lm_url) -> None:      
         """Register this nm to the given lm. """
-        print("REGISTERING TO LM")
-        client_lm = Client(url=self.client_address_list)
+        print("REGISTERING TO LM " + str(lm_url))
+        client_lm = Client(url=lm_url)
 
         await client_lm.set_security(
             SecurityPolicyBasic256Sha256,
@@ -231,8 +227,7 @@ class NM:
                 logger.info("NM connected to LM")
                 break
             except BaseException as e:
-                print(e)
-                logger.error("NM SHOUTS: Connection error while connecting to LM. Retrying in 5 seconds")
+                logger.error(e)
                 await asyncio.sleep(5)
         
         # Load lm data type definitions
@@ -250,11 +245,8 @@ class NM:
         usage_node = await root.get_child(["0:Objects", f"{idx}:LM", f"{idx}:usage"])
 
         # Store lm references to private collection
-        self.client_lms.append({"lm": lm, "url": self.client_address_list, "data_node": data_node, "usage_node": usage_node})
-        print("//////")
-        print(self.client_lms)
-        sys.exit(0)
-
+        self.client_lms.append({"lm": lm, "url": lm_url, "data_node": data_node, "usage_node": usage_node})
+ 
         # Create EventListener to listen to new sensor data
         handler = RTUDataEventListener()
         subscription = await client_lm.create_subscription(1000, handler)
@@ -301,14 +293,9 @@ class NM:
             .get_child(["0:Objects", f"{self.idx}:{self.uuid}", f"{self.idx}:config"])
         config = await config_node.get_value()
         regions = config.regions
-        # trying to get this code fixed 
-       # for br in regions:
-        ##   lm_1_address = br.lm_1_address
-          #  lm_2_address = br.lm_2_address
-            # Register to new local monitors
-        await self.__register_to_lm("opc.tcp://0.0.0.0:10812/freeopcua/server/")
-        await self.__register_to_lm("opc.tcp://127.0.0.1:10813/freeopcua/server/")
-        print("registered with adresses")
+    
+        await self.__register_to_lm(self.client_address_list[0])
+        await self.__register_to_lm(self.client_address_list[1])
 
     async def _log_to_opc(self):
         # Wait until we have registered with the c2 and before sending log messages

@@ -17,6 +17,8 @@ class NMConfig:
     cert = None  # Own Certificate
     private_key = None  # Encrypted Private Key
     private_key_password = None  # Private Key Password
+    
+    client_address_list = [] 
 
     def __init__(self):
         pass
@@ -33,4 +35,5 @@ class NMConfig:
         self.cert = "../config/certificates/cert_nm.der"
         self.private_key = "../config/certificates/key_nm.pem"
         self.private_key_password = "password"
+        self.client_address_list = []
         return self
