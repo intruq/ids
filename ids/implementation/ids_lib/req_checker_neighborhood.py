@@ -48,11 +48,10 @@ class ReqCheckerNeighborhood:
         except Exception as e:
             self.__logger.error(e)
 
-    async def get_data_from_lm(self, lm_address):
+    async def get_data_from_lm(self, i_of_lm):
         """Get the latest data values from the specified local monitor."""
-        print("Versuche Daten zu lesen")
         data_node = None                  
-        data_node = self.__client_lms[0]["data_node"]
+        data_node = self.__client_lms[i_of_lm]["data_node"]
         try:
             lm_data = await data_node.read_value()
         except Exception:
@@ -74,12 +73,17 @@ class ReqCheckerNeighborhood:
             
             big_data.append(data)
             
-        print(big_data)
+        return big_data
         
-    async def _checkReq1(self, lm_address):
-        data = await self.get_data_from_lm(lm_address)
+    async def _checkReq1(self):
+        data_lm1 = await self.get_data_from_lm(0)
+        print(data_lm1)
         
-        #print(data)
+        print("____")
+        
+        data_lm2 = await self.get_data_from_lm(0)
+        print(data_lm2)
+        
         #print("____")
         #tmp = json.loads(br.region_definition)
       #  print(tmp)
