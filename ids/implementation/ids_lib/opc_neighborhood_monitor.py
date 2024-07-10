@@ -341,7 +341,6 @@ class NM:
                 # Iterate over all LMs that have reported to have new data
                 if True: 
                 #if len(self.lm_to_check) > 0:
-                    print("before check")
                     await req_checker.check_requirements(self.client_address_list)
                     await self._report_violation_via_opc(self.violation_queue)
                     

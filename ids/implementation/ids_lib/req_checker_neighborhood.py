@@ -42,7 +42,7 @@ class ReqCheckerNeighborhood:
         """Check all requirements of the neighborhood scope"""
         try:
             await asyncio.gather(
-                self._checkReq1(lm_address),
+                self._checkReq1(),
                # self.__logger.error("No requirement checks implemented.")
             )
         except Exception as e:
@@ -77,14 +77,14 @@ class ReqCheckerNeighborhood:
         
     async def _checkReq1(self):
         data_lm1 = await self.get_data_from_lm(0)
-        print(data_lm1)
+       # print(data_lm1)
         
-        print("____")
+        for c in data_lm1:
+            if int(c[1]) > 0: 
+                print("OK")
+            else:
+                print("Requirement violated")
+                
+        data_lm2 = await self.get_data_from_lm(1)
+        #print(data_lm2)
         
-        data_lm2 = await self.get_data_from_lm(0)
-        print(data_lm2)
-        
-        #print("____")
-        #tmp = json.loads(br.region_definition)
-      #  print(tmp)
-        #self.__logger.error("Test requirement!")
