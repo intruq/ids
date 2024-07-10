@@ -146,7 +146,7 @@ class NM:
         
         # Set up requirement checker
         global req_checker
-        req_checker = ReqCheckerNeighborhood(self.__br, self.client_address_list, self.violation_queue, logger)
+        req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger)
    
         # System related statistics
         opcNMType = await server.nodes.base_object_type.add_object_type(idx, "NeighborhoodMonitor")
@@ -344,6 +344,7 @@ class NM:
                     print("before check")
                     await req_checker.check_requirements(self.client_address_list)
                     await self._report_violation_via_opc(self.violation_queue)
+                    
                     #for lm in self.lm_to_check:
                       #  time_elapsed = time.clock()
                       #  print("vor Test")
