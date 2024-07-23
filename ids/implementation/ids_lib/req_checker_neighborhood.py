@@ -43,6 +43,7 @@ class ReqCheckerNeighborhood:
         try:
             await asyncio.gather(
                 self._checkReq1(),
+                self._check_req_3()
                # self.__logger.error("No requirement checks implemented.")
             )
         except Exception as e:
@@ -77,14 +78,37 @@ class ReqCheckerNeighborhood:
         
     async def _checkReq1(self):
         data_lm1 = await self.get_data_from_lm(0)
-       # print(data_lm1)
+      #  print("Data 1" + str(data_lm1))
         
         for c in data_lm1:
             if int(c[1]) > 0: 
-                print("OK")
+                i =1
+               #print("OK")
             else:
-                print("Requirement violated")
+                i = 2
+              # print("Requirement violated")
                 
+        data_lm2 = await self.get_data_from_lm(1)
+       # print("LM 2" + str(data_lm2))
+        #exit(0)
+        
+    async def _check_req_3(self): 
+        data_lm1 = await self.get_data_from_lm(0)
+        ##print(data_lm1)
         data_lm2 = await self.get_data_from_lm(1)
         #print(data_lm2)
         
+        v_1 = -1 
+        v_2 = -1 
+        
+        for d in data_lm1: 
+            if d[0] == "sensor_212": 
+                v_1 = d[1]
+        for d in data_lm2: 
+            if d[0] == "sensor_110": 
+                v_2 = d[1]       
+                        
+        diff = abs(v_1-v_2)
+        
+        if diff > 4: 
+            print("Something strange going on between M1 and M2.")

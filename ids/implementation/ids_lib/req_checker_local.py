@@ -1,7 +1,4 @@
 import asyncio
-import logging
-
-
 class ReqCheckerLocal:
 
     def __init__(self, rtu_config, data_ref, violations_queue, logger):
