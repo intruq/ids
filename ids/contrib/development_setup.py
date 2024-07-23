@@ -14,8 +14,6 @@ def fix_filepaths(dict):
     return dict
 
 def init():
-
-    print(socket.gethostname())
     
     env = fix_filepaths(dotenv_values("development_configs/c2_template.env"))
     subprocess.Popen(["python", "./../implementation/c2_server.py"],

@@ -13,12 +13,13 @@ class ReqCheckerLocal:
     async def check_requirements(self):
         """Check all requirements of the local scope"""
         await asyncio.gather(
-            self._check_req_7(),
-            self._check_req_8()
+            self._check_req_1_c(),
+            self._check_req_1_v(), 
+            self._check_req_2()
         )
 
 
-    async def _check_req_7(self):
+    async def _check_req_1_c(self):
         """Checks Requirement S7: Safety threshold regarding current is met at every meter."""
         data = await self.__data_ref.read_value()
         meter_config = self.__rtu_conf["meters"]
@@ -37,7 +38,7 @@ class ReqCheckerLocal:
                 self.logger.error("Requirement 7 violated! Max current in %s should be < %s but is currently %s",
                             m["id"], max_current, round(temp_current, 3))
 
-    async def _check_req_8(self):
+    async def _check_req_1_v(self):
         """Checks Requirement S8: Safety threshold regarding voltage is met at every meter."""
         # Get meter data from server
         data = await self.__data_ref.read_value()
@@ -56,6 +57,17 @@ class ReqCheckerLocal:
                 # Report to console
                 self.logger.error("Requirement 8 violated! Max voltage in %s should be < %s but is currently %s",
                             m["id"], max_voltage, round(temp_voltage, 3))
+            
+    async def _check_req_2(self): 
+        data = await self.__data_ref.read_value()
+        meter_config = self.__rtu_conf["meters"]
+        for m in meter_config: 
+            if(m["id"] == "sensor_115"):
+                d = get_meter_data(data, m)
+                if(float(d.voltage)< 0): 
+                    self.logger.error("Something strange happens at the solar plant.")       
+        self.logger.error("all good at solar plant")
+        
 
 
 def get_meter_data(data, m):
