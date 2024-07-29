@@ -76,24 +76,6 @@
   ],
   "meters": [
     {
-      "id": "sensor_112",
-      "bus_id": "b11",
-      "power_line_id": "branch_11",
-      "s_current": 0.1,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "0"
-    },
-    {
-      "id": "sensor_114",
-      "bus_id": "b11",
-      "power_line_id": "branch_12",
-      "s_current": 0.1,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "4"
-    },
-    {
       "id": "sensor_104",
       "bus_id": "b11",
       "power_line_id": "branch_13",
@@ -146,6 +128,23 @@
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "28"
+    }, {
+      "id": "sensor_112",
+      "bus_id": "b11",
+      "power_line_id": "branch_11",
+      "s_current": 0.1,
+      "s_voltage": 11000,
+      "hr_index_voltage": "36",
+      "hr_index_current": "0"
+    },
+    {
+      "id": "sensor_114",
+      "bus_id": "b11",
+      "power_line_id": "branch_12",
+      "s_current": 0.1,
+      "s_voltage": 11000,
+      "hr_index_voltage": "36",
+      "hr_index_current": "4"
     },
     {
       "id": "sensor_115",

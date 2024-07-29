@@ -343,7 +343,8 @@ class LM:
                 # Read and decode hr values from modbus
                 # Note: the length of a holding register is 8 bytes
                 hr_data_current = self.__modbus_client.read_holding_registers(hr_index_current, 8, unit=1)
-                hr_data_voltage = self.__modbus_client.read_holding_registers(hr_index_voltage, 8, unit=1)
+                hr_data_voltage = self.__modbus_client.read_holding_registers(hr_index_voltage, 8, unit=1)            
+                
                 decoder_current = BinaryPayloadDecoder.from_registers(hr_data_current.registers, endian=Endian.Big)
                 decoder_voltage = BinaryPayloadDecoder.from_registers(hr_data_voltage.registers, endian=Endian.Big)
                 # Create new data object to store meter data
@@ -353,9 +354,6 @@ class LM:
                 meter_data.voltage = decoder_voltage.decode_64bit_float()
                 opc_data.meters.append(meter_data)
                 
-                #print(meter_data)
-               
-
             # Write new reading into data node
             await self.opc_lm_data_ref.write_value(opc_data)
             # Notify NM of data change

@@ -57,6 +57,7 @@ class ReqCheckerLocal:
             
     async def _check_req_2(self): 
         data = await self.__data_ref.read_value()
+        #print(data)
         meter_config = self.__rtu_conf["meters"]
         for m in meter_config: 
             if(m["id"] == "sensor_115"):

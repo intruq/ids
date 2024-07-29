@@ -55,6 +55,7 @@ class ReqCheckerNeighborhood:
         data_node = self.__client_lms[i_of_lm]["data_node"]
         try:
             lm_data = await data_node.read_value()
+            #print(lm_data)
         except Exception:
            lm_data = None
         
@@ -66,12 +67,17 @@ class ReqCheckerNeighborhood:
             current = meterdata.__getattribute__("current")
             voltage = meterdata.__getattribute__("voltage")
             sensor_id = meterdata.__getattribute__("id")
+            
+           # if sensor_id == "sensor_114": 
+               ## print(current)
+              #  print(voltage)
         
             data = []
             data.append(sensor_id)
             data.append(current)
             data.append(voltage)
             
+        
             big_data.append(data)
             
         return big_data
@@ -94,21 +100,32 @@ class ReqCheckerNeighborhood:
         
     async def _check_req_3(self): 
         data_lm1 = await self.get_data_from_lm(0)
-        ##print(data_lm1)
+       # print("Data 1")
+       # print(data_lm1)
         data_lm2 = await self.get_data_from_lm(1)
-        #print(data_lm2)
+       # print("Data 2")
+       # print(data_lm2)
         
         v_1 = -1 
         v_2 = -1 
         
         for d in data_lm1: 
-            if d[0] == "sensor_212": 
+            if d[0] == "sensor_213": 
                 v_1 = d[1]
+             #   print(v_1)
+                
+                
         for d in data_lm2: 
-            if d[0] == "sensor_110": 
-                v_2 = d[1]       
+            if d[0] == "sensor_114": 
+                v_2 = d[1] 
+            #    print(v_2)      
                         
         diff = abs(v_1-v_2)
+        #print(diff)
         
-        if diff > 4: 
+        
+        if diff > 2: 
             print("Something strange going on between M1 and M2.")
+        
+        elif diff > 1: 
+            print("Potentially Something strange going on between M1 and M2.")

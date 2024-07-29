@@ -10,14 +10,14 @@
 
     
     <!-- Sensors  -->
-    <reg type="hr" index="0" label="sensor_v12" dt="64bit_float">0</reg>
-    <reg type="hr" index="4" label="sensor_v14" dt="64bit_float">0</reg>
     <reg type="hr" index="8" label="sensor_v04" dt="64bit_float">0</reg>
     <reg type="hr" index="12" label="sensor_v05" dt="64bit_float">0</reg>
     <reg type="hr" index="16" label="sensor_v06" dt="64bit_float">0</reg>
     <reg type="hr" index="20" label="sensor_v07" dt="64bit_float">0</reg>
     <reg type="hr" index="24" label="sensor_v09" dt="64bit_float">0</reg>
-    <reg type="hr" index="28" label="sensor_v10" dt="64bit_float">0</reg>
+    <reg type="hr" index="28" label="sensor_v10" dt="64bit_float">0</reg>    
+    <reg type="hr" index="0" label="sensor_v12" dt="64bit_float">0</reg>
+    <reg type="hr" index="4" label="sensor_v14" dt="64bit_float">0</reg>
     <reg type="hr" index="32" label="sensor_v15" dt="64bit_float">0</reg>
     
     <reg type="hr" index="36" label="sensor_pq_1" dt="64bit_float">0</reg>
