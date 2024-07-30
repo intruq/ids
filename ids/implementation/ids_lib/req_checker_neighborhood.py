@@ -1,35 +1,6 @@
 import asyncio
 import json
 
-
-def get_meter_data(data1, data2, m):
-    """Checks if the meter m is contained in either one of the MeterData lists and returns the corresponding MeterData
-    object. """
-    for d in data1.meters:
-        if d.id == m["id"]:
-            return d
-
-    for d in data2.meters:
-        if d.id == m["id"]:
-            return d
-
-    return None
-
-
-def get_switch_data(data1, data2, s):
-    """Checks if the switch is contained in either one of the SwitchData lists and returns the corresponding SwitchData
-        object. """
-    for d in data1.switches:
-        if d.id == s["id"]:
-            return d
-
-    for d in data2.switches:
-        if d.id == s["id"]:
-            return d
-
-    return None
-
-
 class ReqCheckerNeighborhood:
 
     def __init__(self, border_regions, client_lms, vio_queue, logger):
@@ -42,9 +13,10 @@ class ReqCheckerNeighborhood:
         """Check all requirements of the neighborhood scope"""
         try:
             await asyncio.gather(
-                self._checkReq1(),
-                self._check_req_3()
-               # self.__logger.error("No requirement checks implemented.")
+                self._checkReq1(0),
+                self._checkReq1(1),
+                self._check_req_3(), 
+                self._check_req_6()
             )
         except Exception as e:
             self.__logger.error(e)
@@ -68,10 +40,6 @@ class ReqCheckerNeighborhood:
             voltage = meterdata.__getattribute__("voltage")
             sensor_id = meterdata.__getattribute__("id")
             
-           # if sensor_id == "sensor_114": 
-               ## print(current)
-              #  print(voltage)
-        
             data = []
             data.append(sensor_id)
             data.append(current)
@@ -81,51 +49,74 @@ class ReqCheckerNeighborhood:
             big_data.append(data)
             
         return big_data
-        
-    async def _checkReq1(self):
+    
+    async def get_data_from_sensor(self, name_of_sensor): 
         data_lm1 = await self.get_data_from_lm(0)
-      #  print("Data 1" + str(data_lm1))
-        
-        for c in data_lm1:
-            if int(c[1]) > 0: 
-                i =1
-               #print("OK")
-            else:
-                i = 2
-              # print("Requirement violated")
-                
         data_lm2 = await self.get_data_from_lm(1)
-       # print("LM 2" + str(data_lm2))
-        #exit(0)
         
-    async def _check_req_3(self): 
-        data_lm1 = await self.get_data_from_lm(0)
-       # print("Data 1")
-       # print(data_lm1)
-        data_lm2 = await self.get_data_from_lm(1)
-       # print("Data 2")
-       # print(data_lm2)
-        
-        v_1 = -1 
-        v_2 = -1 
+        sensor_data = []
         
         for d in data_lm1: 
-            if d[0] == "sensor_213": 
-                v_1 = d[1]
-             #   print(v_1)
-                
-                
+            if d[0] == name_of_sensor: 
+                sensor_data = d
+        
         for d in data_lm2: 
-            if d[0] == "sensor_114": 
-                v_2 = d[1] 
-            #    print(v_2)      
-                        
-        diff = abs(v_1-v_2)
-        #print(diff)
+            if d[0] == name_of_sensor: 
+               sensor_data = d
+        
+        return sensor_data
+    
+    async def get_v_data_from_sensor(self, name_of_sensor): 
+        sensor_data = await self.get_data_from_sensor(name_of_sensor)
+        if sensor_data:
+           return sensor_data[2]
+        else: 
+            return []
+    
+    async def get_c_data_from_sensor(self, name_of_sensor): 
+   
+        sensor_data = await self.get_data_from_sensor(name_of_sensor)
+        if sensor_data:
+            return sensor_data[1]
+        else: 
+            return []
+        
+    async def _checkReq1(self, i_of_lm):
+        data_lm1 = await self.get_data_from_lm(i_of_lm)        
+        for c in data_lm1:
+            if int(c[1]) < 0: 
+                print("Requirement violated")
+                
+        
+    async def _check_req_3(self): 
+        
+        v_1 = await self.get_c_data_from_sensor("sensor_213")
+        v_2 = await self.get_c_data_from_sensor("sensor_114")
+        
+        if v_1 and v_2:
+            diff = abs(v_1-v_2)
+        
+            if diff > 2: 
+                print("Something strange going on between M1 and M2.")
+        
+            elif diff > 1: 
+                print("Potentially Something strange going on between M1 and M2.")
+            
+            
+    async def _check_req_6(self):
+        
+        mv = await self.get_c_data_from_sensor("sensor_212")
+        
+        if mv: 
+            v_1 = await self.get_c_data_from_sensor("sensor_35") 
+            v_2 = await self.get_c_data_from_sensor("sensor_36") 
+            v_3 = await self.get_c_data_from_sensor("sensor_37")  
+        
+            if v_1: 
+                av = (v_1 + v_2 + v_3)/3
+                print(av)
+                print("___")
+                print(mv/av)
+                print("Transformer all good.")
         
         
-        if diff > 2: 
-            print("Something strange going on between M1 and M2.")
-        
-        elif diff > 1: 
-            print("Potentially Something strange going on between M1 and M2.")

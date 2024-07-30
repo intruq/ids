@@ -2,55 +2,55 @@
   "power_lines": [
     {
       "id": "branch_11",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_421",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_13",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_14",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_15",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_16",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_17",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_18",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     },
     {
       "id": "branch_19",
-      "i_max": 0.1,
+      "i_max": 100,
       "v_ref": 11000,
       "is_local": 0
     }
@@ -79,7 +79,7 @@
       "id": "sensor_104",
       "bus_id": "b11",
       "power_line_id": "branch_13",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "8"
@@ -88,7 +88,7 @@
       "id": "sensor_105",
       "bus_id": "b11",
       "power_line_id": "branch_14",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "12"
@@ -97,7 +97,7 @@
       "id": "sensor_106",
       "bus_id": "b11",
       "power_line_id": "branch_15",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "16"
@@ -106,7 +106,7 @@
       "id": "sensor_107",
       "bus_id": "b11",
       "power_line_id": "branch_16",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "20"
@@ -115,7 +115,7 @@
       "id": "sensor_109",
       "bus_id": "b11",
       "power_line_id": "branch_17",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "24"
@@ -124,7 +124,7 @@
       "id": "sensor_110",
       "bus_id": "b11",
       "power_line_id": "branch_18",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "28"
@@ -132,7 +132,7 @@
       "id": "sensor_112",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "0"
@@ -141,7 +141,7 @@
       "id": "sensor_114",
       "bus_id": "b11",
       "power_line_id": "branch_12",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "4"
@@ -150,7 +150,7 @@
       "id": "sensor_115",
       "bus_id": "b11",
       "power_line_id": "branch_19",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11000,
       "hr_index_voltage": "36",
       "hr_index_current": "32"
@@ -159,7 +159,7 @@
       "id": "sensor_11",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11,
       "hr_index_voltage": "36",
       "hr_index_current": "0"
@@ -168,7 +168,7 @@
       "id": "sensor_12",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11,
       "hr_index_voltage": "40",
       "hr_index_current": "0"
@@ -177,7 +177,7 @@
       "id": "sensor_13",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 0.1,
+      "s_current": 100,
       "s_voltage": 11,
       "hr_index_voltage": "44",
       "hr_index_current": "0"

@@ -56,17 +56,33 @@ class ReqCheckerLocal:
                             m["id"], max_voltage, round(temp_voltage, 3))
             
     async def _check_req_2(self): 
-        data = await self.__data_ref.read_value()
-        #print(data)
-        meter_config = self.__rtu_conf["meters"]
-        for m in meter_config: 
-            if(m["id"] == "sensor_115"):
-                d = get_meter_data(data, m)
-                if(float(d.voltage)< 0): 
-                    self.logger.error("Something strange happens at the solar plant.")       
-        self.logger.error("all good at solar plant")
+        d = await self.get_v_data("sensor_115")
+        if(float(d)< 0): 
+            self.logger.error("Something strange happens at the solar plant.")       
         
 
+    async def get_raw_meter_data(self, sensor_name): 
+        data = await self.__data_ref.read_value()
+        meter_config = self.__rtu_conf["meters"]
+        d = []
+        for m in meter_config: 
+                if(m["id"] == sensor_name):
+                    d = get_meter_data(data, m)
+        return d
+    
+    async def get_v_data(self, sensor_name):
+        d = await self.get_raw_meter_data(sensor_name)
+        if d: 
+            return d.voltage
+        else: 
+            return []
+        
+    async def get_c_data(self, sensor_name):
+        d = await self.get_raw_meter_data(sensor_name)
+        if d: 
+            return d.current
+        else: 
+            return []
 
 def get_meter_data(data, m):
     for d in data.meters:
