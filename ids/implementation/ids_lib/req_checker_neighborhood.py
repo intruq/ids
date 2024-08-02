@@ -1,5 +1,7 @@
 import asyncio
 import json
+import pandapower as pp
+import time
 
 class ReqCheckerNeighborhood:
 
@@ -119,4 +121,49 @@ class ReqCheckerNeighborhood:
                 print(mv/av)
                 print("Transformer all good.")
         
+    async def _check_req_7(self): 
         
+        # todo load the respective data for V & i 
+        some_data = await self.get_c_data_from_sensor("sensor_212")
+        
+        # todo calculate P/Q and guess theta  
+        
+        if some_data: 
+            # taken from PowerTech Implementation
+            # create empty net
+            net = pp.create_empty_network()
+
+            typ1 = {"r_ohm_per_km": 0.01, "x_ohm_per_km": 0.1,
+                    "c_nf_per_km": 200, "max_i_ka": 100}
+            pp.create_std_type(net, name="verenas_cable_type", data=typ1, element="line")
+
+            # create buses
+            # vn_kv = The grid voltage level.
+            b1 = pp.create_bus(net, vn_kv=1.5, name="MV 1")
+            b2 = pp.create_bus(net, vn_kv=1.5, name="MV 2")
+
+            # create bus elements
+            pp.create_ext_grid(
+                net, bus=b1, vm_pu=some_data, name="Grid Connection")
+            pp.create_load(net, bus=b2, p_mw=some_data, q_mvar=some_data, name="Load")
+
+            # create branch elements
+            pp.create_line(net, from_bus=b1, to_bus=b2, length_km=0.939,
+                        name="Line", std_type="verenas_cable_type")
+
+            # Solve the model
+            start_time = time.time()
+            pp.runpp(net)
+            elapsed_time = time.time() - start_time
+            print("Elapsed time: {}".format(elapsed_time))
+
+            # sanitizing the results for checking later
+            san_model = {}
+
+            for i in (n+1 for n in range(2)):
+                san_model[i] = {"V": net.res_bus["vm_pu"][i-1], "Theta": net.res_bus["va_degree"]
+                                [i-1], "P":  net.res_bus["p_mw"][i-1], "Q": net.res_bus["q_mvar"][i-1]}
+
+            print("Solved model is:")
+            print(san_model)
+
