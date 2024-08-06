@@ -127,14 +127,19 @@ class ReqCheckerNeighborhood:
         some_data = await self.get_c_data_from_sensor("sensor_212")
         
         # todo calculate P/Q and guess theta  
+        # theta = 1 means that we have only P and very little (none) Q
+        # P = V * I * cos(1)
+        # Q = V * I * sind(0)
         
         if some_data: 
             # taken from PowerTech Implementation
             # create empty net
             net = pp.create_empty_network()
 
+            # needs to be calculated from our cable data 
             typ1 = {"r_ohm_per_km": 0.01, "x_ohm_per_km": 0.1,
                     "c_nf_per_km": 200, "max_i_ka": 100}
+            
             pp.create_std_type(net, name="verenas_cable_type", data=typ1, element="line")
 
             # create buses
@@ -143,8 +148,19 @@ class ReqCheckerNeighborhood:
             b2 = pp.create_bus(net, vn_kv=1.5, name="MV 2")
 
             # create bus elements
+            
+            # MV 1
+            # vm_pu voltage at the slack node in per unit, default 1
+            # voltage = ... 
             pp.create_ext_grid(
                 net, bus=b1, vm_pu=some_data, name="Grid Connection")
+
+            # MV 2
+            # calculated as above:  
+            # p_mw (float, default 0) - The active power of the load
+            # - postive value   -> load
+            # - negative value  -> generation
+            #  q_mvar (float, default 0) - The reactive power of the load
             pp.create_load(net, bus=b2, p_mw=some_data, q_mvar=some_data, name="Load")
 
             # create branch elements
