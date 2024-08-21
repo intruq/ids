@@ -2,6 +2,7 @@ import asyncio
 import json
 import pandapower as pp
 import time
+import math
 
 class ReqCheckerNeighborhood:
 
@@ -10,6 +11,7 @@ class ReqCheckerNeighborhood:
         self.__client_lms = client_lms
         self.__vio_queue = vio_queue
         self.__logger = logger
+        self.__transformer_pos = -1
 
     async def check_requirements(self, lm_address):
         """Check all requirements of the neighborhood scope"""
@@ -103,24 +105,7 @@ class ReqCheckerNeighborhood:
         
             elif diff > 1: 
                 print("Potentially Something strange going on between M1 and M2.")
-            
-            
-    async def _check_req_6(self):
-        
-        mv = await self.get_c_data_from_sensor("sensor_212")
-        
-        if mv: 
-            v_1 = await self.get_c_data_from_sensor("sensor_35") 
-            v_2 = await self.get_c_data_from_sensor("sensor_36") 
-            v_3 = await self.get_c_data_from_sensor("sensor_37")  
-        
-            if v_1: 
-                av = (v_1 + v_2 + v_3)/3
-                print(av)
-                print("___")
-                print(mv/av)
-                print("Transformer all good.")
-        
+                   
     async def _check_req_7(self): 
         
         # todo load the respective data for V & i 
@@ -182,4 +167,64 @@ class ReqCheckerNeighborhood:
 
             print("Solved model is:")
             print(san_model)
+            
+    # proporition of coils needs to be stable 
+    # v_mv / v_lv = I_lv/I_mv 
+    # todo get the correct sensor names
+    async def _check_req_transformer_a(self): 
+        c_mv = await self.get_c_data_from_sensor("sensor_212")
+        
+        if c_mv: 
+            c_1 = await self.get_c_data_from_sensor("sensor_35") 
+            c_2 = await self.get_c_data_from_sensor("sensor_36") 
+            c_3 = await self.get_c_data_from_sensor("sensor_37")  
+        
+            if c_1: 
+                c_lv = math.sqrt((c_1**2 + c_2**2 + c_3**2) / 3)
+
+        v_mv = await self.get_v_data_from_sensor("sensor_212")
+        
+        if v_mv: 
+            v_1 = await self.get_v_data_from_sensor("sensor_35") 
+            v_2 = await self.get_v_data_from_sensor("sensor_36") 
+            v_3 = await self.get_v_data_from_sensor("sensor_37")  
+        
+            if v_1:
+                v_lv = math.sqrt((v_1**2 + v_2**2 + v_3**2) / 3)
+                
+        coils_c = c_mv /  c_lv
+        coils_v = v_mv / v_lv
+        
+        diff = (coils_c/coils_v)
+        
+        if(diff > 1.2 or diff < 0.8): # todo decide for meaningful delta 
+            print(diff)
+            print("Something strange going on at the transformer - ratio is off .")
+
+    
+    # check in which state we currently are and if that is desired 
+    # maybe also save history of states to see how they changed in the latest past 
+    # right now history for one time step implemented, need to see in reality if this is too harsh or possible 
+    async def _check_req_transformer_b(self): 
+        s = [11250,11000,10750,10500,10250] # possible positions for input MV 
+        
+        v_mv = await self.get_v_data_from_sensor("sensor_212")
+        
+        current_pos = -1 
+        for i in s: 
+            tolerance = 0.1 * s[i] 
+            if(s[i] - tolerance <= v_mv <= s[i] + tolerance):
+                current_pos = i 
+        
+        if (current_pos == -1):
+            print("No matching transoformer position")
+            
+        if(self.__transformer_pos!=-1):
+            delta = abs(current_pos-self.__transformer_pos)
+            if(delta >= 2): 
+                print("Hard transformer switch happened ")
+            self.__transformer_pos = current_pos
+        
+        
+
 
