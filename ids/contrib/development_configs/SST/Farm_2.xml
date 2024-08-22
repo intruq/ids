@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<DVCD label="Farm 2">
+    <ip>0.0.0.0</ip>
+    <port>10502</port>
+    <identity>
+        <vendor name="UTwente 0" url="https://www.utwente.nl" />
+        <product name="PoorSecuritySubstation" code="PSS" model="PSS 1.0" />
+        <version major="0" minor="5" />
+    </identity>
+
+    <!-- Sensors  -->
+    <reg type="hr" index="0" label="sensor_20" dt="64bit_float">0</reg>
+    <reg type="hr" index="4" label="sensor_21" dt="64bit_float">0</reg>
+    <!-- Max Sensors -->
+    <reg type="hr" index="8" label="max_v_2" dt="64bit_float">0</reg>
+    <reg type="hr" index="12" label="max_c_2" dt="64bit_float">0</reg>
+    <code>mosaikrtu/conf/rtu_logic_good.py</code>
+</DVCD>

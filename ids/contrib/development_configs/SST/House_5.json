@@ -1,0 +1,44 @@
+{
+  "power_lines": [
+    {
+      "id": "branch_5",
+      "i_max": 100,
+      "v_ref": 11000,
+      "is_local": 0
+    }
+  ],
+  "switches": [],
+  "buses": [
+    {
+      "id": "b5",
+      "power_lines_in": {
+        "ids": [
+          "branch_5"
+        ]
+      },
+      "power_lines_out": {
+        "ids": []
+      }
+    }
+  ],
+  "meters": [
+    {
+      "id": "sensor_50",
+      "bus_id": "b5",
+      "power_line_id": "branch_5",
+      "s_current": 100,
+      "s_voltage": 11000,
+      "hr_index_voltage": "0",
+      "hr_index_current": "0"
+    },
+    {
+      "id": "sensor_51",
+      "bus_id": "b5",
+      "power_line_id": "branch_5",
+      "s_current": 100,
+      "s_voltage": 11000,
+      "hr_index_voltage": "0",
+      "hr_index_current": "4"
+    }
+  ]
+}
