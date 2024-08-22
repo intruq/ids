@@ -15,7 +15,8 @@ class ReqCheckerLocal:
             self._check_req_2()
         )
 
-
+    # REQ for Coteq case
+    # REQ for SST case
     async def _check_req_1_c(self):
         """Checks Requirement S7: Safety threshold regarding current is met at every meter."""
         data = await self.__data_ref.read_value()
@@ -34,7 +35,9 @@ class ReqCheckerLocal:
                 # Report to console
                 self.logger.error("Requirement 7 violated! Max current in %s should be < %s but is currently %s",
                             m["id"], max_current, round(temp_current, 3))
-
+    
+    # REQ for Coteq case
+    # REQ for SST case
     async def _check_req_1_v(self):
         """Checks Requirement S8: Safety threshold regarding voltage is met at every meter."""
         # Get meter data from server
@@ -54,12 +57,14 @@ class ReqCheckerLocal:
                 # Report to console
                 self.logger.error("Requirement 8 violated! Max voltage in %s should be < %s but is currently %s",
                             m["id"], max_voltage, round(temp_voltage, 3))
-            
+    
+    # REQ Coteq case      
     async def _check_req_2(self): 
         d = await self.get_v_data("sensor_115")
         if(float(d)< 0): 
             self.logger.error("Something strange happens at the solar plant.")       
     
+    # REQ Coteq case 
     # check saftey threshold for toegestann strom on both sides 
     # subcheck for LV side
     # subcheck for MV side
@@ -75,7 +80,7 @@ class ReqCheckerLocal:
             self.logger.error("LM side current at transformer is higher than allowed.")
                 
 
-    
+    # REQ Coteq case
     # use THD als saftey threshold to secure the electornic devices in the LV grid, as a value that is independent of I and V 
     async def _check_transformer_req_II(self):
         
@@ -92,6 +97,7 @@ class ReqCheckerLocal:
         else: 
             self.logger.error("Power quality undesirable on LV side of transformer.")    
             
+    # REQ Coteq case 
     # no value should be outside of allowed values on both sides 
     # subcheck for LV side 
     # subcheck for MV side 

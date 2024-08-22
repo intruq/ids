@@ -84,14 +84,8 @@ class ReqCheckerNeighborhood:
             return sensor_data[1]
         else: 
             return []
-        
-    async def _checkReq1(self, i_of_lm):
-        data_lm1 = await self.get_data_from_lm(i_of_lm)        
-        for c in data_lm1:
-            if int(c[1]) < 0: 
-                print("Requirement violated")
                 
-        
+    # REQ Coteq case     
     async def _check_req_3(self): 
         
         v_1 = await self.get_c_data_from_sensor("sensor_213")
@@ -106,6 +100,7 @@ class ReqCheckerNeighborhood:
             elif diff > 1: 
                 print("Potentially Something strange going on between M1 and M2.")
                    
+    # REQ Coteq case 
     async def _check_req_7(self): 
         
         # todo load the respective data for V & i 
@@ -167,7 +162,8 @@ class ReqCheckerNeighborhood:
 
             print("Solved model is:")
             print(san_model)
-            
+
+    # REQ Coteq case 
     # proporition of coils needs to be stable 
     # v_mv / v_lv = I_lv/I_mv 
     # todo get the correct sensor names
@@ -202,6 +198,7 @@ class ReqCheckerNeighborhood:
             print("Something strange going on at the transformer - ratio is off .")
 
     
+    # REQ Coteq case 
     # check in which state we currently are and if that is desired 
     # maybe also save history of states to see how they changed in the latest past 
     # right now history for one time step implemented, need to see in reality if this is too harsh or possible 
