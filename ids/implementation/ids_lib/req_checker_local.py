@@ -1,4 +1,5 @@
 import asyncio
+import numpy as np 
 class ReqCheckerLocal:
 
     def __init__(self, rtu_config, data_ref, violations_queue, logger):
@@ -116,6 +117,59 @@ class ReqCheckerLocal:
             self.logger.error("MV side voltage at transformer is outside of allowed boundaries.")
       
     
+    # REQ SST case 
+    # calculate V4 and check if it is reasonable 
+    # local check from the House 5 
+    async def _check_v_4(self): 
+        
+        v_4 = self._calc_v_4()
+        max_v = 10 
+        
+        if v_4 > max_v: 
+            self.logger.error("Calculated V4 is unreasonable, either V5 or I5 are corrupted.")
+    
+    async def _calc_v_4(self): 
+        i_5_3 = await self.get_c_data("sensor_v_5") 
+        i_5 = i_5_3[:3] # aus drei phasen eine machen ? check when real data is available 
+        
+        z5 = 5 # todo configure correct value 
+        v_5_raw = await self.get_v_data("sensor_5")
+        v_5 = v_5_raw + i_5 * z5 
+        
+        z45 = 5 # todo configure correct value 
+        v_4 = v_5 + i_5*z45
+        return v_4 
+    
+    async def _calc_v_3_r(self): 
+        # asuuming I 4 = [0,0,0]
+        i_4 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
+        
+        v_4 = self._calc_v_4()
+        
+        z34 = 5 # todo configure correct value
+        
+        i_5_3 = await self.get_c_data("sensor_v_5") 
+        i_5 = i_5_3[:3] # aus drei phasen eine machen ? check when real data is available 
+        
+        v_3_r = v_4 + z34*(i_5 + i_4)
+        
+        return v_3_r
+        
+    # REQ SST case 
+    # calculate V3 from right side and check if it is reasonable 
+    # local check from house 5  
+    async def _check_v3_rightside(self): 
+        
+        v_3_r = self._calc_v_3_r()
+        
+        max_v = 10 
+        
+        if v_3_r > max_v: 
+            self.logger.error("Calculated V3 from the right side is unreasonable, either V5 or I5 are corrupted in case of assumed I4 = 0.")
+    
+        
+        return 0 
+        
     async def get_raw_meter_data(self, sensor_name): 
         data = await self.__data_ref.read_value()
         meter_config = self.__rtu_conf["meters"]
