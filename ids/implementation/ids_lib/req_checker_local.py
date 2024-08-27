@@ -166,7 +166,6 @@ class ReqCheckerLocal:
         
         if v_3_r > max_v: 
             self.logger.error("Calculated V3 from the right side is unreasonable, either V5 or I5 are corrupted in case of assumed I4 = 0.")
-    
         
         return 0 
         

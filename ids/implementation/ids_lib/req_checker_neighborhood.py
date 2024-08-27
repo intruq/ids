@@ -4,6 +4,8 @@ import pandapower as pp
 import time
 import math
 
+import numpy as np 
+
 class ReqCheckerNeighborhood:
 
     def __init__(self, border_regions, client_lms, vio_queue, logger):
@@ -221,7 +223,113 @@ class ReqCheckerNeighborhood:
             if(delta >= 2): 
                 print("Hard transformer switch happened ")
             self.__transformer_pos = current_pos
+            
+    # REQ SST case
+    # calculate V6 and check if it is reasonable 
+    # combines I6 and V0, which are both measured at Trafo 0 and Solar Roof 6, respectivly
+    async def _check_v_6(self): 
         
+        v_0 = await self.get_v_data_from_sensor("sensor_v_0")
+        i_6_3 = await self.get_c_data_from_sensor("sensor_c_6")
+        i_6 = i_6_3[:3]
+        z_6 = 5 # todo add correct value
         
+        v_6 = v_0 - i_6 * z_6
+        max_v = 5
+        if v_6 > max_v: 
+            print("Calculated V6 is unreasonable, either V0 or I6 are corrupted.")
+        
+    
+    async def _calc_v_2(self): 
+        z_2 = 5 # todo fix real value 
+        v_2_l = await self.get_v_data_from_sensor("sensor_v_2")
+        i_2_3 = await self.get_c_data_from_sensor("sensor_c_2")
+        i_2 = i_2_3[:3]
+        v_2 = v_2_l + i_2 * z_2
+        
+        return v_2 
+    
+    async def _calc_v_4(self): 
+        z_5 = 5 #todo fix real value
+        v_5_l = await self.get_v_data_from_sensor("sensor_v_5")
+        i_5_3 = await self.get_c_data_from_sensor("sensor_c_5")
+        i_5 = i_5_3[:3]
+        v_5 = v_5_l + i_5 * z_5
+        
+        z_45 = 5 # todo fix real value
+        v_4 = v_5 + i_5 * z_45
+        
+        return v_4 
+             
+     # REQ SST case 
+     # calculate V3 from the left side anc check if it is reasonable 
+     # combines V2, V5 and a fixed I3 (or I4, but here implemented as fixed I3)
+     # requires House 5 and farm 2 
+    async def _check_v_3_leftside(self):
+       
+        v_2 = self._calc_v_2()
+        v_4 = self._calc_v_4()
+        
+        z_34 =  5 # todo fix real value
+        z_23 = 5 # todo fix real value
+        
+        # asuuming I 3 = [0,0,0]
+        i_3 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
+        
+        v_3 = (v_2*z_34 + v_4*z_23-i_3*z_23*z_34)/(z_34+z_23)
+        
+        max_v = 5
+        if v_3 > max_v: 
+            print("Calculated V3 is unreasonable, either V2 or I5 are corrupted.")     
+    
+    async def _calc_i_4(self):
+        z_34 =  5 # todo fix real value
+        z_23 = 5 # todo fix real value
+        # asuuming I 3 = [0,0,0]
+        i_3 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
+        
+        i_5_3 = await self.get_c_data_from_sensor("sensor_c_5")
+        i_5 = i_5_3[:3]
+        
+        v_2 = self._calc_v_2()
+        v_4 = self._calc_v_4()
+        
+        i_4 = (-i_3*z_23-i_5*z_34+v_2-v_4)/(z_23+z_34)
+        
+        return i_4
+    
+    # REQ SST case 
+    # calculate I_4 with assumed and fixed I_3 to check if it is reasonable 
+    # utilizes House 5 and Farm 2 
+    async def _check_i_4(self):
+        i_4 = self._calc_i_4()
+        
+        max_i = 5 # todo fix 
+        
+        if i_4 > max_i: 
+            print("Calculated I_4 is unreasonable, either Farm 2 or House 5 are corrupted.")  
 
-
+    # REQ SST case 
+    # calculate v1 and check if it is reasonable 
+    # with farm 2 and house 5 
+    async def _check_v_1(self): 
+        max_v = 5 # todo fix
+        z_12 = 5 # todo fix 
+        v_2 = self._calc_v_2()
+        
+        # asuuming I 3 = [0,0,0]
+        i_3 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
+        
+        i_4 = self._calc_i_4()
+        
+        i_2_3 = await self.get_c_data_from_sensor("sensor_c_2")
+        i_2 = i_2_3[:3]
+        
+        i_5_3 = await self.get_c_data_from_sensor("sensor_c_5")
+        i_5 = i_5_3[:3]
+        
+        i_12 = i_2 + i_3 + i_4 + i_5 
+        v_1 = v_2 + i_12 * z_12
+        
+        if v_1 > max_v: 
+            print("Calculated V1 is unreasonable, either Farm 2 or House 5 are corrupted.")   
