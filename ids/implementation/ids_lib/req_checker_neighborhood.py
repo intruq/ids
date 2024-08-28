@@ -309,11 +309,7 @@ class ReqCheckerNeighborhood:
         if i_4 > max_i: 
             print("Calculated I_4 is unreasonable, either Farm 2 or House 5 are corrupted.")  
 
-    # REQ SST case 
-    # calculate v1 and check if it is reasonable 
-    # with farm 2 and house 5 
-    async def _check_v_1(self): 
-        max_v = 5 # todo fix
+    async def _calc_v_1(self):
         z_12 = 5 # todo fix 
         v_2 = self._calc_v_2()
         
@@ -331,5 +327,105 @@ class ReqCheckerNeighborhood:
         i_12 = i_2 + i_3 + i_4 + i_5 
         v_1 = v_2 + i_12 * z_12
         
+        return v_1
+    
+    # REQ SST case 
+    # calculate v1 and check if it is reasonable 
+    # with farm 2 and house 5 
+    async def _check_v_1(self): 
+        
+        v_1 = self._calc_v_1()
+         
+        max_v = 5 # todo fix
         if v_1 > max_v: 
             print("Calculated V1 is unreasonable, either Farm 2 or House 5 are corrupted.")   
+
+    # REQ SST Case 
+    # Neighbourhhood +, 
+    # because we need farm 2 and house 5 to calculate v1 and then still input from trafo 0 to compare with v0 there 
+    async def _check_i_1(self): 
+        max_i = 5 # todo fix 
+        
+        v_0 = await self.get_v_data_from_sensor("sensor_v_0")
+        v_1 = self._calc_v_1()
+        
+        z_01 = 10 # todo fix 
+        i_01 = (v_0-v_1)/z_01
+        
+        # calculating i_12 
+        # asuuming I 3 = [0,0,0]
+        i_3 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
+        i_4 = self._calc_i_4()
+        i_2_3 = await self.get_c_data_from_sensor("sensor_c_2")
+        i_2 = i_2_3[:3]
+        i_5_3 = await self.get_c_data_from_sensor("sensor_c_5")
+        i_5 = i_5_3[:3]
+        
+        i_12 = i_2 + i_3 + i_4 + i_5 
+        
+        i_1 = i_01-i_12 
+        
+        if i_1 > max_i: 
+            print("Calculated I_1 is unreasonable, either Trafo station 0, Farm 2 or House 5 are corrupted.")  
+            
+    # REQ SST Case
+    # neighbourhood + 
+    # I_7 and I_8 should be reasonable 
+    # can only be checked/calculated together with the information we have
+    # utilizes all inputs 
+    async def _check_i_7_8(self): 
+        i_max_together = 5 
+        
+        v_0 = await self.get_v_data_from_sensor("sensor_v_0")
+        v_1 = self._calc_v_1()
+        
+        z_01 = 10 # todo fix 
+        i_01 = (v_0-v_1)/z_01
+        
+        i_0_3 = await self.get_c_data_from_sensor("sensor_c_0")
+        i_0 = i_0_3[:3]
+        
+        i_6_3 = await self.get_c_data_from_sensor("sensor_c_6")
+        i_6 = i_6_3[:3]
+        
+        z_06 = 5 #todo fix 
+        
+        i_06 = (i_0 - i_6)/z_06
+        
+        i_7_8 = i_0 - i_01 - i_06 
+        if i_7_8 > i_max_together: 
+            print("Calculated I_1 is unreasonable, either Trafo station 0, Farm 2, House 5 or Solar 6 are corrupted.")  
+            
+    
+    # REQ SST case 
+    # sanity check for voltage drop, 
+    # adapted for i_05,i_02,i_25 
+    async def _check_i_05(self): 
+        v_0 = await self.get_v_data_from_sensor("sensor_v_0")
+        
+        v_2 = self._calc_v_2()
+
+        z_5 = 5 #todo fix real value
+        v_5_l = await self.get_v_data_from_sensor("sensor_v_5")
+        i_5_3 = await self.get_c_data_from_sensor("sensor_c_5")
+        i_5 = i_5_3[:3]
+        v_5 = v_5_l + i_5 * z_5
+        
+        #todo fix me 
+        z_05 = 5 
+        z_25 = 5 
+        z_02 = 5
+        
+        i_05 = (v_0-v_5)/z_05
+        i_02 = (v_0-v_2)/z_02
+        i_25 = (v_2-v_5)/z_25
+        
+        i_border = 20 
+         
+        if i_05 > i_border: 
+            print("Calculated I_05 is unreasonable, either Trafo station 0, Farm 2, House 5 are corrupted.")  
+        if i_02 > i_border: 
+            print("Calculated I_02 is unreasonable, either Trafo station 0, Farm 2, House 5 are corrupted.")  
+        if i_25 > i_border: 
+            print("Calculated I_25 is unreasonable, either Trafo station 0, Farm 2, House 5 are corrupted.")  
+       
