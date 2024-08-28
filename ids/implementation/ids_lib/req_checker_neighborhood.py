@@ -119,8 +119,8 @@ class ReqCheckerNeighborhood:
             net = pp.create_empty_network()
 
             # needs to be calculated from our cable data 
-            typ1 = {"r_ohm_per_km": 0.01, "x_ohm_per_km": 0.1,
-                    "c_nf_per_km": 200, "max_i_ka": 100}
+            typ1 = {"r_ohm_per_km": 0.2179914802981896, "x_ohm_per_km": 0.0835516506922258,
+                    "c_nf_per_km": 0.3386900958466454, "max_i_ka": 100}
             
             pp.create_std_type(net, name="verenas_cable_type", data=typ1, element="line")
 
