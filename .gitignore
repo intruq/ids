@@ -7,10 +7,12 @@ ids/deployment/config/certificates/key_lm.pem
 ids/deployment/config/certificates/key_nm.pem
 /ids/test/Lib
 /ids/test
-/ids/implementation/ids_lib
 /ids/replay_csv/mosaikrtu/__pycache__
 /ids/contrib/node_modules
 /ids/replay_csv/mosaikrtu/dvcd/__pycache__
 ids/contrib/development_configs/certificates/*
 ids/replay_csv/data/*
 /ids/contrib/development_configs/SST/certificates
+ids/implementation/ids_lib/__pycache__/
+ids/implementation/ids_lib/config/__pycache__/
+ids/implementation/ids_lib/util/__pycache__/
