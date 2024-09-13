@@ -128,7 +128,9 @@ class ReqCheckerLocal:
         
         if v_4 > max_v: 
             self.logger.error("Calculated V4 is unreasonable, either V5 or I5 are corrupted.")
+            
     
+    # helper function, calculates V4
     async def _calc_v_4(self): 
         i_5_3 = await self.get_c_data("sensor_v_5") 
         i_5 = i_5_3[:3] # aus drei phasen eine machen ? check when real data is available 
@@ -141,11 +143,9 @@ class ReqCheckerLocal:
         v_4 = v_5 + i_5*z45
         return v_4 
     
-    # REQ SST case 
-    # calculate V3 from the right side and check if it is reasonable 
-    # local check from the House 5
+    # helper function 
+    # caluclates V3 from the right side with assumed I4 = [0.0.0]
     async def _calc_v_3_r(self): 
-        # asuuming I 4 = [0,0,0]
         i_4 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
         
         v_4 = self._calc_v_4()

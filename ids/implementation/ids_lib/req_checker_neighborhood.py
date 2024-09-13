@@ -242,7 +242,8 @@ class ReqCheckerNeighborhood:
         if v_6 > max_v: 
             print("Calculated V6 is unreasonable, either V0 or I6 are corrupted.")
         
-    
+    # helper function
+    # calculates v2
     async def _calc_v_2(self): 
         z_2 = 5 # todo fix real value 
         v_2_l = await self.get_v_data_from_sensor("sensor_v_2")
@@ -252,6 +253,8 @@ class ReqCheckerNeighborhood:
         
         return v_2 
     
+    # helper function
+    # calculates V4
     async def _calc_v_4(self): 
         z_5 = 5 #todo fix real value
         v_5_l = await self.get_v_data_from_sensor("sensor_v_5")
@@ -285,6 +288,8 @@ class ReqCheckerNeighborhood:
         if v_3 > max_v: 
             print("Calculated V3 is unreasonable, either V2 or I5 are corrupted.")     
     
+    # helper function
+    # calculates I4
     async def _calc_i_4(self):
         z_34 =  5 # todo fix real value
         z_23 = 5 # todo fix real value
@@ -312,6 +317,8 @@ class ReqCheckerNeighborhood:
         if i_4 > max_i: 
             print("Calculated I_4 is unreasonable, either Farm 2 or House 5 are corrupted.")  
 
+    # helper function 
+    # caluclates V1
     async def _calc_v_1(self):
         z_12 = 5 # todo fix 
         v_2 = self._calc_v_2()
