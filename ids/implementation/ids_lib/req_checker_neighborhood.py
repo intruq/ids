@@ -88,6 +88,8 @@ class ReqCheckerNeighborhood:
             return []
                 
     # REQ Coteq case     
+    # compare values from both sides of the connecting cable between M1 and M2 
+    # will only work well once replay problem is fixed
     async def _check_req_3(self): 
         
         v_1 = await self.get_c_data_from_sensor("sensor_213")
@@ -100,9 +102,10 @@ class ReqCheckerNeighborhood:
                 print("Something strange going on between M1 and M2.")
         
             elif diff > 1: 
-                print("Potentially Something strange going on between M1 and M2.")
+                print("Potentially something strange going on between M1 and M2.")
                    
     # REQ Coteq case 
+    # Power Flow solving between both MV stations 
     async def _check_req_7(self): 
         
         # todo load the respective data for V & i 

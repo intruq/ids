@@ -71,11 +71,12 @@ class ReqCheckerLocal:
     # subcheck for MV side
     async def _check_transformer_req_I(self):
         togestaan_lv = 550
-        lv_side = await self.get_c_data("sensor_c_1") # maybe check with 3 phase current and transform it to once phase current 
+        lv_side = await self.get_c_data("sensor_c_1") 
+        # todo: maybe check with 3 phase current and transform it to once phase current 
         if(float(lv_side)>togestaan_lv):
             self.logger.error("LV side current at transformer is higher than allowed.")
         
-        togestaan_mv = 21.5
+        togestaan_mv = 21.5 #todo fix value
         mv_side = await self.get_c_data("sensor_212")
         if(float(mv_side)>togestaan_mv):
             self.logger.error("LM side current at transformer is higher than allowed.")
@@ -94,7 +95,7 @@ class ReqCheckerLocal:
         saftey_threshold = 5
 
         if thd_1 < saftey_threshold  and thd_2 < saftey_threshold and thd_3 < saftey_threshold: 
-            print("thd looks good")
+            print("THD looks good")
         else: 
             self.logger.error("Power quality undesirable on LV side of transformer.")    
             
@@ -140,6 +141,9 @@ class ReqCheckerLocal:
         v_4 = v_5 + i_5*z45
         return v_4 
     
+    # REQ SST case 
+    # calculate V3 from the right side and check if it is reasonable 
+    # local check from the House 5
     async def _calc_v_3_r(self): 
         # asuuming I 4 = [0,0,0]
         i_4 = np.asarray([complex(0,0)],[complex(0,0)],[complex(0,0)])
