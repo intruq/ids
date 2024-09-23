@@ -24,6 +24,7 @@ def run_lm():
     config.rtu_modbus_port = os.getenv('IDS_RTU_MODBUS_PORT')
     config.label = "UT165957"
     config.hostname = "UT165957"
+    config.case = os.getenv("CASE")
 
     with open(os.getenv('IDS_RTU_CONFIG_FILE'), 'r') as file:
         config.rtu_config = file.read()

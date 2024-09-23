@@ -19,6 +19,8 @@ class NMConfig:
     private_key_password = None  # Private Key Password
     
     client_address_list = [] 
+    
+    case = "" 
 
     def __init__(self):
         pass

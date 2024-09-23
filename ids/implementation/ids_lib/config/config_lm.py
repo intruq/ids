@@ -25,6 +25,8 @@ class LMConfig:
     
     label = "UT165957"
     hostname = label
+    
+    case = "" 
 
     def __init__(self):
         pass

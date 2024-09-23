@@ -73,6 +73,8 @@ class NM:
         self.isRegistered = False  # True if this NM has registered with the c2
 
         self.lm_to_check = [1,2] # das sollte doch bestimmt auch irgendwo her geladen werden? 
+        
+        self.case = config.case
 
     async def __init(self):
         """Initialize NM by registering to c&c server"""
@@ -146,7 +148,7 @@ class NM:
         
         # Set up requirement checker
         global req_checker
-        req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger)
+        req_checker = ReqCheckerNeighborhood(self.__br, self.client_lms, self.violation_queue, logger, self.case)
    
         # System related statistics
         opcNMType = await server.nodes.base_object_type.add_object_type(idx, "NeighborhoodMonitor")

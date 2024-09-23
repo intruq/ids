@@ -48,7 +48,7 @@ def init():
                      env={
                          **os.environ,
                          **env,
-                     } , stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     } )
 
     env = fix_filepaths(dotenv_values("development_configs/nm_2_template.env"))
     subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],

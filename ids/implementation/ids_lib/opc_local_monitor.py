@@ -58,6 +58,7 @@ class LM:
         self.violation_queue = queue.SimpleQueue()  # Queue for buffering violation messages until they are sent by the LM
         self.isRegistered = False  # True if this LM has registered with the c2
         self.__modbus_client = None  # Client connected to Modbus RTU
+        self.case = config.case
 
     async def __init(self) -> None:
         """Initialize LM. Register with c&c server and connect to RTU"""
@@ -189,7 +190,7 @@ class LM:
 
         # Set up requirement checker
         global req_checker
-        req_checker = ReqCheckerLocal(self.__rtu_conf, self.opc_lm_data_ref, self.violation_queue, logger)
+        req_checker = ReqCheckerLocal(self.__rtu_conf, self.opc_lm_data_ref, self.violation_queue, logger, self.case)
 
         # heartbeat event to check if component is still alive and connected to c2 server
         # should not print anything in the console, only if not available (error message)

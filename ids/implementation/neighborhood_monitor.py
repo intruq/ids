@@ -22,6 +22,8 @@ def run_nm():
     config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_1'))
     config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_2'))
     
+    config.case = os.getenv('CASE')
+    
     with open(os.getenv('IDS_BR_CONFIG_FILE'), 'r') as file:
         config.br_config = file.read()
       
