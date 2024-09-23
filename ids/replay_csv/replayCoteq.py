@@ -23,6 +23,7 @@ class Replay:
         self.configs.append(load_rtu("./data/Coteq/MV_Station_2.xml"))
         
         #print(self.configs)
+        
 
         # CSV Dateien laden
         # vermutlich möchte ich das so anpassen, dass jede CSV Datei einzeln geladen wird, um da unterschiedliche Sachen auch skippen zu können
@@ -31,7 +32,6 @@ class Replay:
             self.scenario.append([])
 
             # skip header row
-            csv_reader.__next__()
             csv_reader.__next__()
 
             for row in csv_reader:
