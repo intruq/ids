@@ -18,15 +18,15 @@ class Replay:
 
         # Konfiguration des Testbeds aus XML lesen
     
-        self.configs.append(load_rtu("./data/LV_Station_1.xml"))
-        self.configs.append(load_rtu("./data/MV_Station_1.xml"))
-        self.configs.append(load_rtu("./data/MV_Station_2.xml"))
+        self.configs.append(load_rtu("./data/Coteq/LV_Station_1.xml"))
+        self.configs.append(load_rtu("./data/Coteq/MV_Station_1.xml"))
+        self.configs.append(load_rtu("./data/Coteq/MV_Station_2.xml"))
         
         #print(self.configs)
 
         # CSV Dateien laden
         # vermutlich möchte ich das so anpassen, dass jede CSV Datei einzeln geladen wird, um da unterschiedliche Sachen auch skippen zu können
-        with open("./data/LV_Station_1.csv", "r") as csv_file:
+        with open("./data/Coteq/LV_Station_1.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -37,7 +37,7 @@ class Replay:
             for row in csv_reader:
                 self.scenario[0].append(row[3:14]) # ggf. aus 0 noch 2 machen, damit reihenfolge MV1, MV2, LV1 ist 
         
-        with open("./data/MV_Station_1.csv", "r") as csv_file:
+        with open("./data/Coteq/MV_Station_1.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -47,7 +47,7 @@ class Replay:
             for row in csv_reader:
                 self.scenario[1].append(row[1:12])
         
-        with open("./data/MV_Station_2.csv", "r") as csv_file:
+        with open("./data/Coteq/MV_Station_2.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
