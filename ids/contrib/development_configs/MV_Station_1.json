@@ -79,88 +79,89 @@
       "id": "sensor_104",
       "bus_id": "b11",
       "power_line_id": "branch_13",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "8"
+      "s_current": 0.38,
+      "s_voltage": 0.38,
+      "hr_index_voltage": "0",
+      "hr_index_current": "0"
     },
     {
       "id": "sensor_105",
       "bus_id": "b11",
       "power_line_id": "branch_14",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "12"
+      "s_current": 0.38,
+      "s_voltage": 0.38,
+      "hr_index_voltage": "4",
+      "hr_index_current": "4"
     },
     {
       "id": "sensor_106",
       "bus_id": "b11",
       "power_line_id": "branch_15",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "16"
-    },
-    {
-      "id": "sensor_107",
-      "bus_id": "b11",
-      "power_line_id": "branch_16",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "20"
+      "s_current": 140,
+      "s_voltage": 140,
+      "hr_index_voltage": "8",
+      "hr_index_current": "8"
     },
     {
       "id": "sensor_109",
       "bus_id": "b11",
       "power_line_id": "branch_17",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "24"
+      "s_current": 140,
+      "s_voltage": 140,
+      "hr_index_voltage": "12",
+      "hr_index_current": "12"
     },
     {
       "id": "sensor_110",
       "bus_id": "b11",
       "power_line_id": "branch_18",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "28"
-    }, {
+      "s_current": 60,
+      "s_voltage": 60,
+      "hr_index_voltage": "16",
+      "hr_index_current": "16"
+    }, 
+    {
+      "id": "sensor_111",
+      "bus_id": "b11",
+      "power_line_id": "branch_11",
+      "s_current": 300,
+      "s_voltage": 300,
+      "hr_index_voltage": "20",
+      "hr_index_current": "20"
+    }, 
+    {
       "id": "sensor_112",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "0"
+      "s_current": 4,
+      "s_voltage": 4,
+      "hr_index_voltage": "24",
+      "hr_index_current": "24"
     },
     {
       "id": "sensor_114",
       "bus_id": "b11",
       "power_line_id": "branch_12",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
-      "hr_index_current": "4"
+      "s_current": 140,
+      "s_voltage": 140,
+      "hr_index_voltage": "28",
+      "hr_index_current": "28"
     },
     {
       "id": "sensor_115",
       "bus_id": "b11",
       "power_line_id": "branch_19",
-      "s_current": 100,
-      "s_voltage": 11000,
-      "hr_index_voltage": "36",
+      "s_current": 300,
+      "s_voltage": 300,
+      "hr_index_voltage": "32",
       "hr_index_current": "32"
-    },
+    }, 
     {
       "id": "sensor_11",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 100,
-      "s_voltage": 11,
+      "s_current": 10.9,
+      "s_voltage": 10.9,
       "hr_index_voltage": "36",
       "hr_index_current": "0"
     },
@@ -168,8 +169,8 @@
       "id": "sensor_12",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 100,
-      "s_voltage": 11,
+      "s_current": 10.9,
+      "s_voltage": 10.9,
       "hr_index_voltage": "40",
       "hr_index_current": "0"
     },
@@ -177,8 +178,8 @@
       "id": "sensor_13",
       "bus_id": "b11",
       "power_line_id": "branch_11",
-      "s_current": 100,
-      "s_voltage": 11,
+      "s_current": 10.9,
+      "s_voltage": 10.9,
       "hr_index_voltage": "44",
       "hr_index_current": "0"
     }

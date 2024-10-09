@@ -213,7 +213,7 @@ class Transformer_Switch_History(NeighbourhoodRequirementCheckStrategy):
         
         current_pos = -1 
         for i in s: 
-            tolerance = 0.1 * s[i] 
+            tolerance = 0.1 * float(s[i])
             if(s[i] - tolerance <= v_mv <= s[i] + tolerance):
                 current_pos = i 
         

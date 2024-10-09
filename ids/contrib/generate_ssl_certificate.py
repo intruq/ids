@@ -102,7 +102,7 @@ def create_certificate(monitor_id, cert_key, rootca_cert, rootca_key):
         .public_key(cert_key.public_key()) \
         .serial_number(x509.random_serial_number()) \
         .not_valid_before(datetime.datetime.utcnow()) \
-        .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(hours=1)) \
+        .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(weeks=100)) \
         .sign(cert_key, hashes.SHA256(), default_backend())
 
     return cert

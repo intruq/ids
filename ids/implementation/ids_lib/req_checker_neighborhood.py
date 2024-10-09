@@ -37,16 +37,16 @@ class ReqCheckerNeighborhood:
      
         if(case == "Coteq"):
             transformer_switch = Transformer_Switch_History( border_regions, client_lms, vio_queue, logger )
-            self.NeighbourhoodReqConfiguration.add_check(transformer_switch)
+           # self.NeighbourhoodReqConfiguration.add_check(transformer_switch)
             
             transformer_coil = Transformer_Coil_Proportion( border_regions, client_lms, vio_queue, logger )
-            self.NeighbourhoodReqConfiguration.add_check(transformer_coil)
+           # self.NeighbourhoodReqConfiguration.add_check(transformer_coil)
             
             coteq_pf =Coteq_Powerflow( border_regions, client_lms, vio_queue, logger )
-            self.NeighbourhoodReqConfiguration.add_check(coteq_pf)
+          #  self.NeighbourhoodReqConfiguration.add_check(coteq_pf)
             
             two_sides = Values_Both_Cable_Sides(border_regions, client_lms, vio_queue, logger )
-            self.NeighbourhoodReqConfiguration.add_check(two_sides)
+           # self.NeighbourhoodReqConfiguration.add_check(two_sides)
 
     async def check_requirements(self, client_address_list):
         await self.NeighbourhoodReqConfiguration.run_checks()

@@ -100,7 +100,7 @@
       "id": "sensor_201",
       "bus_id": "b21",
       "power_line_id": "branch_22",
-      "s_current": 100,
+      "s_current": 20,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "4"
@@ -109,7 +109,7 @@
       "id": "sensor_202",
       "bus_id": "b21",
       "power_line_id": "branch_23",
-      "s_current": 100,
+      "s_current": 50,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "8"
@@ -118,7 +118,7 @@
       "id": "sensor_203",
       "bus_id": "b21",
       "power_line_id": "branch_24",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "12"
@@ -127,7 +127,7 @@
       "id": "sensor_204",
       "bus_id": "b21",
       "power_line_id": "branch_25",
-      "s_current": 100,
+      "s_current": 50,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "16"
@@ -136,7 +136,7 @@
       "id": "sensor_205",
       "bus_id": "b21",
       "power_line_id": "branch_26",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "20"
@@ -145,7 +145,7 @@
       "id": "sensor_206",
       "bus_id": "b21",
       "power_line_id": "branch_27",
-      "s_current": 100,
+      "s_current": 10,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "24"
@@ -154,7 +154,7 @@
       "id": "sensor_209",
       "bus_id": "b21",
       "power_line_id": "branch_28",
-      "s_current": 100,
+      "s_current": 0.3,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "28"
@@ -163,7 +163,7 @@
       "id": "sensor_210",
       "bus_id": "b21",
       "power_line_id": "branch_29",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "32"
@@ -172,7 +172,7 @@
       "id": "sensor_211",
       "bus_id": "b21",
       "power_line_id": "branch_210",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "36"
@@ -181,7 +181,7 @@
       "id": "sensor_212",
       "bus_id": "b21",
       "power_line_id": "branch_211",
-      "s_current": 100,
+      "s_current": 10,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "40"
@@ -189,7 +189,7 @@
       "id": "sensor_213",
       "bus_id": "b21",
       "power_line_id": "branch_421",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "0"
@@ -198,7 +198,7 @@
       "id": "sensor_214",
       "bus_id": "b21",
       "power_line_id": "branch_212",
-      "s_current": 100,
+      "s_current": 80,
       "s_voltage": 11000,
       "hr_index_voltage": "48",
       "hr_index_current": "44"
@@ -208,7 +208,7 @@
       "bus_id": "b21",
       "power_line_id": "branch_421",
       "s_current": 100,
-      "s_voltage": 11000,
+      "s_voltage": 11,
       "hr_index_voltage": "48",
       "hr_index_current": "0"
     },
@@ -217,7 +217,7 @@
       "bus_id": "b21",
       "power_line_id": "branch_421",
       "s_current": 100,
-      "s_voltage": 11000,
+      "s_voltage": 1,
       "hr_index_voltage": "52",
       "hr_index_current": "0"
     },
@@ -226,7 +226,7 @@
       "bus_id": "b21",
       "power_line_id": "branch_421",
       "s_current": 100,
-      "s_voltage": 11000,
+      "s_voltage": 11,
       "hr_index_voltage": "56",
       "hr_index_current": "0"
     }

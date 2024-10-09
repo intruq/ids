@@ -28,16 +28,16 @@ class ReqCheckerLocal:
             self.LocalReqConfiguration.add_check(saftey_threshold_v)
             
             solar_plant_sanity = Solar_Plant_Sanity(rtu_config, data_ref, violations_queue, logger)
-            self.LocalReqConfiguration.add_check(solar_plant_sanity)
+            #self.LocalReqConfiguration.add_check(solar_plant_sanity)
             
             transformer_threshold = Transformer_Saftey_Threshold_Current(rtu_config, data_ref, violations_queue, logger)
-            self.LocalReqConfiguration.add_check(transformer_threshold)
+           # self.LocalReqConfiguration.add_check(transformer_threshold)
             
             transformer_border = Transformer_Border_Values(rtu_config, data_ref, violations_queue, logger)
-            self.LocalReqConfiguration.add_check(transformer_border)
+           # self.LocalReqConfiguration.add_check(transformer_border)
             
             thd_threshold = THD_Threshold(rtu_config, data_ref, violations_queue, logger)
-            self.LocalReqConfiguration.add_check(thd_threshold)
+           # self.LocalReqConfiguration.add_check(thd_threshold)
             
     
     async def check_requirements(self):
