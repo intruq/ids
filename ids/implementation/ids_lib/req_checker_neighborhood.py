@@ -48,6 +48,9 @@ class ReqCheckerNeighborhood:
             two_sides = Values_Both_Cable_Sides(border_regions, client_lms, vio_queue, logger )
            # self.NeighbourhoodReqConfiguration.add_check(two_sides)
 
+        if (case == "demkit"):
+            print("Hello nm")
+
     async def check_requirements(self, client_address_list):
         await self.NeighbourhoodReqConfiguration.run_checks()
     

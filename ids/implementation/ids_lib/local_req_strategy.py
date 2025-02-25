@@ -221,3 +221,217 @@ class SST_V_3(SST_checks):
             self.logger.error("Calculated V3 from the right side is unreasonable, either V5 or I5 are corrupted in case of assumed I4 = 0.")
         
         return 0 
+    
+#Test Cases DEMKit
+
+class Demkit_Test_Case_1(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Reads meter value and passes it to log."""
+        # Get meter data from server
+        data = await self._data_ref.read_value()
+        meter_config = self._rtu_conf["meters"]
+        for m in meter_config:
+            max_voltage = m["s_voltage"]
+            d = self.get_meter_data(data, m)
+            temp_voltage = d.voltage
+            if temp_voltage > max_voltage:
+                # Add violation to queue
+                self._vio_queue.put_nowait({
+                    "req_id": 8,
+                    "component_id": m["id"]}
+                )
+
+                # Report to console
+                self.logger.error("Requirement 8 violated! Max voltage in %s should be < %s but is currently %s",
+                            m["id"], max_voltage, round(temp_voltage, 3))
+                
+class Demkit_Test_Case_2(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Reads meter value and passes it to log."""
+        # Get meter data from server
+        print("Start Test")
+        data = await self._data_ref.read_value()
+        #print(data)
+        meter_config = self._rtu_conf["meters"]
+        #print(meter_config)
+        for m in meter_config:
+            print(self.get_meter_data(data, m))
+                
+class Demkit_Test_Case_3(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Reads meter value and passes it to log."""
+        # Get meter data from server
+        meter_value_c_1 = await self.get_c_data("sensor_21")
+        meter_value_c_2 = await self.get_c_data("sensor_22")
+        meter_value_c_3 = await self.get_c_data("sensor_23")
+        meter_value_c_4 = await self.get_c_data("sensor_24")
+        meter_value_c_5 = await self.get_c_data("sensor_25")
+        meter_value_c_6 = await self.get_c_data("sensor_26")
+        meter_value_c_7 = await self.get_c_data("sensor_27")
+        meter_value_c_8 = await self.get_c_data("sensor_28")
+        meter_value_c_9 = await self.get_c_data("sensor_29")
+        meter_value_c_10 = await self.get_c_data("sensor_30")
+        meter_value_c_11 = await self.get_c_data("sensor_31")
+            
+        # Report to console
+        self.logger.error("Req: %s", meter_value_c_1)
+        self.logger.error("Req: %s", meter_value_c_2)
+        self.logger.error("Req: %s", meter_value_c_3)
+        self.logger.error("Req: %s", meter_value_c_4)
+        self.logger.error("Req: %s", meter_value_c_5)
+        self.logger.error("Req: %s", meter_value_c_6)
+        self.logger.error("Req: %s", meter_value_c_7)
+        self.logger.error("Req: %s", meter_value_c_8)
+        self.logger.error("Req: %s", meter_value_c_9)
+        self.logger.error("Req: %s", meter_value_c_10)
+        self.logger.error("Req: %s", meter_value_c_11)
+
+# Requirement Checks DEMKit
+
+class DEMKit_S1_Household_Grid_Balance(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S1: In every household the power generated equals the power consumed."""
+        # Get meter data from server
+        sensors = ["sensor_22", "sensor_24", "sensor_25", "sensor_27", "sensor_28", "sensor_30", "sensor_31"]
+        meter_current = await self.get_c_data("sensor_21")
+        temp_current = 0
+        for s in sensors:
+            temp_current += await self.get_c_data(s)
+
+        if not (meter_current - 1 <= temp_current <= meter_current + 1):
+            # Add violation to queue
+                self._vio_queue.put_nowait({
+                    "req_id": 1,
+                    "component_id": "sensor_21"}
+                )
+
+                # Report to console
+                self.logger.error("Requirement S1 violated! Smart-Meter(sensor_21) current of %sW is not equal to produced/consumed current of the household grid: %sW",
+                            meter_current, temp_current)
+        
+class DEMKit_S2_Saftey_Threshold_C(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S2: Safety threshold regarding current is met at every meter."""
+        # Get meter data from server
+        data = await self._data_ref.read_value()
+        meter_config = self._rtu_conf["meters"]
+        for m in meter_config:
+            max_current = m["s_current"]
+            min_current = 0
+            d = self.get_meter_data(data, m)
+            temp_current = d.current
+            if not (min_current <= temp_current < max_current):
+                # Add violation to queue
+                self._vio_queue.put_nowait({
+                    "req_id": 2,
+                    "component_id": m["id"]}
+                )
+
+                # Report to console
+                self.logger.error("Requirement S2 violated! Max current in %s should be > 0 and < %s but is currently %s",
+                            m["id"], max_current, round(temp_current, 3))
+                
+class DEMKit_S3_Battery_Overcharge(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S3: State of charge never exceeds defined limit(12000Wh)."""
+        # Get meter data from server
+        soc_current = await self.get_c_data("sensor_23")
+        soc_max = 12000
+        soc_min = 0
+        battery_current = await self.get_c_data("sensor_22")
+        if not (soc_min <= soc_current <= soc_max):
+            # Add violation to queue
+            self._vio_queue.put_nowait({
+                "req_id": 3,
+                "component_id": "sensor_23"}
+            )
+
+            # Report to console
+            self.logger.error("Requirement S3 violated! Max battery soc should be %s <= and < %s but is currently %s",
+                        soc_min, soc_max, round(soc_current, 3))
+        
+        if soc_current == soc_max and battery_current > 0:
+            # Add violation to queue
+            self._vio_queue.put_nowait({
+                "req_id": 3,
+                "component_id": "sensor_23"}
+            )
+
+            # Report to console
+            self.logger.error("Requirement S3 violated! Battery soc is 100%%, but battery current %s > 0.", battery_current)
+
+        if soc_current == soc_min and battery_current < 0:
+            # Add violation to queue
+            self._vio_queue.put_nowait({
+                "req_id": 3,
+                "component_id": "sensor_23"}
+            )
+
+            # Report to console
+            self.logger.error("Requirement S3 violated! Battery soc is 0%%, but battery current %s < 0.", battery_current)
+
+class DEMKit_S4_Feedin_Only_Generators(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement 4: Only power generating devices can feed power into the grid."""
+        # Get meter data from server
+        generators = ["sensor_21", "sensor_22", "sensor_30"]
+        data = await self._data_ref.read_value()
+        meter_config = self._rtu_conf["meters"]
+        for m in meter_config:
+            d = self.get_meter_data(data, m)
+            temp_current = d.current
+            if temp_current < 0 and not (m["id"] in generators):
+                # Add violation to queue
+                self._vio_queue.put_nowait({
+                    "req_id": 4,
+                    "component_id": m["id"]}
+                )
+
+                # Report to console
+                self.logger.error("Requirement S4 violated! Current of %s should be > 0 but is currently %s.",
+                            m["id"], round(temp_current, 3))
+
+class DEMKit_S5_Battery_Discharge(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S5: State of charge never exceeds defined limit(12000Wh)."""
+        # Get meter data from server
+        soc_current = await self.get_v_data("sensor_25")
+        soc_max = 12000
+        if soc_current > soc_max:
+            # Add violation to queue
+            self._vio_queue.put_nowait({
+                "req_id": 5,
+                "component_id": "sensor_25"}
+            )
+
+            # Report to console
+            self.logger.error("Requirement S5 violated! Max battery soc should be < %s but is currently %s",
+                        soc_max, round(soc_current, 3))
+
+class DEMKit_S6_Isolated_Power_Activity(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S2: Safety threshold regarding current is met at every meter."""
+        # Get meter data from server
+        data = await self._data_ref.read_value()
+        meter_config = self._rtu_conf["meters"]
+        for m in meter_config:
+            max_current = m["s_current"]
+            d = self.get_meter_data(data, m)
+            temp_current = d.current
+            if temp_current > max_current:
+                # Add violation to queue
+                self._vio_queue.put_nowait({
+                    "req_id": 2,
+                    "component_id": m["id"]}
+                )
+
+                # Report to console
+                self.logger.error("Requirement S2 violated! Max current in %s should be < %s but is currently %s",
+                            m["id"], max_current, round(temp_current, 3))
+        
+class DEMKit_S7(LocalRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S2: Safety threshold regarding current is met at every meter."""
+        # Get meter data from server
+        data = await self._data_ref.read_value()
+        meter_config = self._rtu_conf["meters"]
