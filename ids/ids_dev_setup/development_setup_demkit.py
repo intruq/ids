@@ -33,20 +33,22 @@ def init():
                      env={
                          **os.environ,
                          **env,
-                     }, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     })
     env = fix_filepaths(dotenv_values("development_configs/demkit/lm_3_template.env"))
     subprocess.Popen(["python", "../implementation/local_monitor.py"],
                      env={
                          **os.environ,
                          **env,
-                     }, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     })
     env = fix_filepaths(dotenv_values("development_configs/demkit/nm_0_2_template.env"))
     subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
                      env={
                          **os.environ,
                          **env,
-                     }, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     })
     
+    #, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+
     while True:
         sleep(1)
 

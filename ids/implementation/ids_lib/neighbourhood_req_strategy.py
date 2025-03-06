@@ -17,6 +17,7 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
         self.__logger = logger
         self.__transformer_pos = -1
         
+        
     @abstractmethod
     def check(self): 
         pass 
@@ -451,3 +452,21 @@ class SST_Voltage_Drop(SST_helper):
         if i_25 > i_border: 
             print("Calculated I_25 is unreasonable, either Trafo station 0, Farm 2, House 5 are corrupted.")  
     
+
+#REQ DEMKit case
+class DEMKit_S6_Registered_Feedin_Only(NeighbourhoodRequirementCheckStrategy):
+    async def check(self):
+        """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
+        c1 = await self.get_c_data_from_sensor("sensor_21")
+        lms = await self.get_data_from_lm(0)
+        #print(lms)
+        lms = await self.get_data_from_lm(1)
+        #print(lms)
+        return
+
+#REQ DEMKit case
+class DEMKit_S7_Safety_Threshold_C(NeighbourhoodRequirementCheckStrategy):
+    """Checks Requirement S2: Operator defined threshold of current in neighborhood is met for all meters."""
+    async def check(self):
+        print("S7")
+        return

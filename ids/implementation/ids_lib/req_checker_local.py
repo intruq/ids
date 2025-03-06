@@ -40,29 +40,23 @@ class ReqCheckerLocal:
            # self.LocalReqConfiguration.add_check(thd_threshold)
 
         if (case == "demkit"):
-            #demkit_test_case = Demkit_Test_Case_3(rtu_config, data_ref, violations_queue, logger)
+            #demkit_test_case = Demkit_Test_Case(rtu_config, data_ref, violations_queue, logger)
             #self.LocalReqConfiguration.add_check(demkit_test_case)
 
-            #demkit_case_1 = DEMKit_S1_Household_Grid_Balance(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_1)
+            demkit_case_1 = DEMKit_S1_Household_Grid_Balance(rtu_config, data_ref, violations_queue, logger)
+            self.LocalReqConfiguration.add_check(demkit_case_1)
 
-            #demkit_case_2 = DEMKit_S2_Saftey_Threshold_C(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_2)
+            demkit_case_2 = DEMKit_S2_Saftey_Threshold_C(rtu_config, data_ref, violations_queue, logger)
+            self.LocalReqConfiguration.add_check(demkit_case_2)
 
-            #demkit_case_3 = DEMKit_S3_Battery_Overcharge(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_3)
+            demkit_case_3 = DEMKit_S3_Battery_Overcharge(rtu_config, data_ref, violations_queue, logger)
+            self.LocalReqConfiguration.add_check(demkit_case_3)
 
             demkit_case_4 = DEMKit_S4_Feedin_Only_Generators(rtu_config, data_ref, violations_queue, logger)
             self.LocalReqConfiguration.add_check(demkit_case_4)
 
-            #demkit_case_5 = DEMKit_S5_Battery_Discharge(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_5)
-
-            #demkit_case_6 = DEMKit_S6_Isolated_Power_Activity(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_6)
-
-            #demkit_case_7 = DEMKit_S7(rtu_config, data_ref, violations_queue, logger)
-            #self.LocalReqConfiguration.add_check(demkit_case_7)
+            demkit_case_5 = DEMKit_S5_Battery_Discharge(rtu_config, data_ref, violations_queue, logger)
+            self.LocalReqConfiguration.add_check(demkit_case_5)
             
     
     async def check_requirements(self):

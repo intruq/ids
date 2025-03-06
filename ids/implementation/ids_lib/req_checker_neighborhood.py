@@ -51,6 +51,13 @@ class ReqCheckerNeighborhood:
         if (case == "demkit"):
             print("Hello nm")
 
+            demkit_nm_case_1 = DEMKit_S6_Registered_Feedin_Only(border_regions, client_lms, vio_queue, logger)
+            self.NeighbourhoodReqConfiguration.add_check(demkit_nm_case_1)
+
+            demkit_nm_case_2 = DEMKit_S7_Safety_Threshold_C(border_regions, client_lms, vio_queue, logger)
+            self.NeighbourhoodReqConfiguration.add_check(demkit_nm_case_2)
+            
+
     async def check_requirements(self, client_address_list):
         await self.NeighbourhoodReqConfiguration.run_checks()
     

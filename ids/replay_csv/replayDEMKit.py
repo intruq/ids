@@ -18,15 +18,15 @@ class Replay:
 
         # Konfiguration des Testbeds aus XML lesen
     
+        self.configs.append(load_rtu("./data/DEMKit/House-1-short.xml"))
+        self.configs.append(load_rtu("./data/DEMKit/House-4-short.xml"))
         self.configs.append(load_rtu("./data/DEMKit/House-8-short.xml"))
-        self.configs.append(load_rtu("./data/DEMKit/Smart-Meters-short.xml"))
-        self.configs.append(load_rtu("./data/DEMKit/House-8.xml"))
         #print(self.configs)
         
 
         # CSV Dateien laden
         # vermutlich möchte ich das so anpassen, dass jede CSV Datei einzeln geladen wird, um da unterschiedliche Sachen auch skippen zu können
-        with open("./data/DEMKit/CSV-House-8-short.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-1-short.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -36,7 +36,7 @@ class Replay:
             for row in csv_reader:
                 self.scenario[0].append(row[1:11])
         
-        with open("./data/DEMKit/CSV-Smart-Meters-short.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-4-short.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -45,9 +45,9 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[1].append(row[1:10])
+                self.scenario[1].append(row[1:5])
 
-        with open("./data/DEMKit/CSV-House-8.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-8-short.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -56,7 +56,7 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[2].append(row[1:10])
+                self.scenario[2].append(row[1:11])
 
         # Datablock erstellen
         for i in [0, 1, 2]:

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<DVCD label="House-4-short">
+    <ip>0.0.0.0</ip>        
+    <port>10502</port>
+    <identity>
+        <vendor name="UTwente 0" url="https://www.utwente.nl" />
+        <product name="PoorSecuritySubstation" code="PSS" model="PSS 1.0" />
+        <version major="0" minor="5" />
+    </identity>
+    <!-- Sensors  -->
+    <reg type="hr" index="0" label="sensor_21" dt="64bit_float">0</reg><!-- SmartMeter-House-4: W-power.real.c.ELECTRICITY  -->
+    <reg type="hr" index="4" label="sensor_22" dt="64bit_float">0</reg><!-- Load-House-4: W-power.real.c.ELECTRICITY  -->
+    <reg type="hr" index="8" label="sensor_23" dt="64bit_float">0</reg><!-- WashingMachine-House-4: W-power.real.c.ELECTRICITY  -->
+    <reg type="hr" index="12" label="sensor_27" dt="64bit_float">0</reg><!-- ElectricVehicle-House-4: W-power.real.c.ELECTRICITY  -->
+    <reg type="hr" index="16" label="sensor_28" dt="64bit_float">0</reg><!-- ElectricVehicle-House-4: Wh-energy.soc  -->
+    <!-- Max Sensors -->
+    <reg type="hr" index="20" label="max_c_21" dt="64bit_float">0</reg>
+    <reg type="hr" index="24" label="max_c_22" dt="64bit_float">0</reg>
+    <reg type="hr" index="28" label="max_c_23" dt="64bit_float">0</reg>
+    <reg type="hr" index="32" label="max_c_27" dt="64bit_float">0</reg>
+    <reg type="hr" index="36" label="max_c_28" dt="64bit_float">0</reg>
+    <code>mosaikrtu/conf/rtu_logic_good.py</code>
+</DVCD>
