@@ -21,6 +21,7 @@ class Replay:
         self.configs.append(load_rtu("./data/DEMKit/House-1-short.xml"))
         self.configs.append(load_rtu("./data/DEMKit/House-4-short.xml"))
         self.configs.append(load_rtu("./data/DEMKit/House-8-short.xml"))
+        self.configs.append(load_rtu("./data/DEMKit/Feeder.xml"))
         #print(self.configs)
         
 
@@ -58,12 +59,23 @@ class Replay:
                 #print(row[1:10])
                 self.scenario[2].append(row[1:11])
 
+        with open("./data/DEMKit/CSV-Feeder.csv", "r") as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=";")
+            self.scenario.append([])
+
+            # skip header row
+            csv_reader.__next__()
+
+            for row in csv_reader:
+                #print(row[1:10])
+                self.scenario[3].append(row[1:2])
+
         # Datablock erstellen
-        for i in [0, 1, 2]:
+        for i in [0, 1, 2, 3]:
             self.datablocks.append(create_datablock(self.configs[i]))
 
         # Modbus Server erstellen
-        for i in [0, 1, 2]:
+        for i in [0, 1, 2, 3]:
             self.server.append(create_server(self.configs[i], self.datablocks[i]))
 
         print("Server erstellt")
@@ -72,7 +84,7 @@ class Replay:
         print("Szenario wird gestartet")
 
         # Modbus Server starten
-        for i in [0, 1, 2]:
+        for i in [0, 1, 2, 3]:
             self.server[i].start()
             print("Started server {}".format(i))
 
@@ -82,7 +94,7 @@ class Replay:
         while y < len(self.scenario[0]):
             print("Refreshing datasets")
             # update values
-            for i in [0, 1, 2]:
+            for i in [0, 1, 2, 3]:
                 index_register = 0
                 for value in self.scenario[i][y]:
                     if value != "":
@@ -93,7 +105,7 @@ class Replay:
                             config_item[0],
                             config_item[1],
                             value,
-                            config_item[2],
+                            config_item[2]
                         )
                         index_register += 1
 
@@ -108,7 +120,7 @@ class Replay:
         print("No more data available, stopping server")
 
         # Server wieder anhalten
-        for i in [0, 1]:
+        for i in [0, 1, 2, 3]:
             self.server[i].stop()
 
         print("Servers stopped")

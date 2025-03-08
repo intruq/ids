@@ -108,6 +108,8 @@ class NM:
         await self.__register_to_c2()
         await self.__register_to_lm(self.client_address_list[0])
         await self.__register_to_lm(self.client_address_list[1])
+        await self.__register_to_lm(self.client_address_list[2])
+        await self.__register_to_lm(self.client_address_list[3])
       
 
     async def __start_opc_server(self) -> None:
@@ -298,6 +300,8 @@ class NM:
     
         await self.__register_to_lm(self.client_address_list[0])
         await self.__register_to_lm(self.client_address_list[1])
+        await self.__register_to_lm(self.client_address_list[2])
+        await self.__register_to_lm(self.client_address_list[3])
 
     async def _log_to_opc(self):
         # Wait until we have registered with the c2 and before sending log messages

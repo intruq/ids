@@ -24,7 +24,7 @@
         ],
     "buses": [
         {
-            "id": "b_1",
+            "id": "b_3",
             "power_lines_in": {
                 "ids": ["branch_2",
                         "branch_3",
@@ -38,7 +38,7 @@
     "meters": [
         {
             "id": "sensor_21",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_2",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -47,7 +47,7 @@
         },
         {
             "id": "sensor_22",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_2",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -56,7 +56,7 @@
         },
         {
             "id": "sensor_23",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_3",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -65,7 +65,7 @@
         },
         {
             "id": "sensor_24",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_3",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -74,7 +74,7 @@
         },
         {
             "id": "sensor_25",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_3",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -83,7 +83,7 @@
         },
         {
             "id": "sensor_29",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -92,7 +92,7 @@
         },
         {
             "id": "sensor_31",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": 11000,
@@ -101,7 +101,7 @@
         },
         {
             "id": "sensor_33",
-            "bus_id": "b_1",
+            "bus_id": "b_3",
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": 11000,

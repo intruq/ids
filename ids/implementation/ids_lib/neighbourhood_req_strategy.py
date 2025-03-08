@@ -14,7 +14,7 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
         self.__br = border_regions
         self.__client_lms = client_lms
         self.__vio_queue = vio_queue
-        self.__logger = logger
+        self.logger = logger
         self.__transformer_pos = -1
         
         
@@ -54,6 +54,8 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
     async def get_data_from_sensor(self, name_of_sensor): 
         data_lm1 = await self.get_data_from_lm(0)
         data_lm2 = await self.get_data_from_lm(1)
+        data_lm3 = await self.get_data_from_lm(2)
+        data_lm4 = await self.get_data_from_lm(3)
         
         sensor_data = []
         
@@ -62,6 +64,14 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
                 sensor_data = d
         
         for d in data_lm2: 
+            if d[0] == name_of_sensor: 
+               sensor_data = d
+
+        for d in data_lm3: 
+            if d[0] == name_of_sensor: 
+               sensor_data = d
+
+        for d in data_lm4: 
             if d[0] == name_of_sensor: 
                sensor_data = d
         
@@ -454,19 +464,53 @@ class SST_Voltage_Drop(SST_helper):
     
 
 #REQ DEMKit case
-class DEMKit_S6_Registered_Feedin_Only(NeighbourhoodRequirementCheckStrategy):
+class DEMKit_NM_Test_Case(NeighbourhoodRequirementCheckStrategy):
     async def check(self):
         """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
         c1 = await self.get_c_data_from_sensor("sensor_21")
         lms = await self.get_data_from_lm(0)
-        #print(lms)
+        print("Monitor1: " + str(lms))
         lms = await self.get_data_from_lm(1)
-        #print(lms)
-        return
+        print("Monitor2: " +  str(lms))
+        lms = await self.get_data_from_lm(2)
+        print("Monitor3: " +  str(lms))
+        lms = await self.get_data_from_lm(3)
+        print("Monitor4: " +  str(lms))
+    
+#REQ DEMKit case
+class DEMKit_S6_Registered_Feedin_Only(NeighbourhoodRequirementCheckStrategy):
+    print("CHECK CREATED")
+    async def check(self):
+        """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
+        sum_sm_currents = 0
+        feeder_current = await self.get_c_data_from_sensor("sensor_34")
+
+        # Adds the value of current measured in all smart meters
+        for i in range(3):
+            sm_current = await self.get_data_from_lm(i)
+            sum_sm_currents += float(sm_current[0][1])
+        
+        # If neighborhood production < consumption:
+        if feeder_current >= 0:
+            # If total consumption of all combined houses exceeds the feeders measurement, an alert is thrown
+            if feeder_current < sum_sm_currents:
+                # Report to console
+                self.logger.error("NM: Requirement S6 violated! The current measured at the feeder (%sW) exceeds the added consumed current of the houses (%sW)", feeder_current, round(sum_sm_currents, 3))
+        # If neighborhood production < consumption:
+        # If total production of all combined houses exceeds the feeders measurement, an alert is thrown
+        elif feeder_current > sum_sm_currents:
+            # Report to console
+            self.logger.error("NM: Requirement S6 violated! The current measured at the feeder (%sW) exceeds the added produced current of the houses (%sW)", feeder_current, round(sum_sm_currents, 3))
 
 #REQ DEMKit case
 class DEMKit_S7_Safety_Threshold_C(NeighbourhoodRequirementCheckStrategy):
-    """Checks Requirement S2: Operator defined threshold of current in neighborhood is met for all meters."""
     async def check(self):
-        print("S7")
+        """Checks Requirement S7: Operator defined threshold of current in neighborhood is met for all meters."""
+        lm_data = []
+        sum_current = 0
+        for i in range(3):
+            lm_temp = await self.get_data_from_lm(i)
+            if lm_temp:
+                lm_data.append(lm_temp)
+                sum_current += lm_temp
         return

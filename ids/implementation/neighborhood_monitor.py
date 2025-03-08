@@ -21,6 +21,8 @@ def run_nm():
     config.private_key_password = os.getenv('IDS_PRIVATE_KEY_PASSWORD')
     config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_1'))
     config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_2'))
+    config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_3'))
+    config.client_address_list.append(os.getenv('IDS_CLIENT_ADDRESS_4'))
     
     config.case = os.getenv('CASE')
     

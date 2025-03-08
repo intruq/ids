@@ -40,6 +40,12 @@ def init():
                          **os.environ,
                          **env,
                      })
+    env = fix_filepaths(dotenv_values("development_configs/demkit/lm_4_template.env"))
+    subprocess.Popen(["python", "../implementation/local_monitor.py"],
+                     env={
+                         **os.environ,
+                         **env,
+                     })
     env = fix_filepaths(dotenv_values("development_configs/demkit/nm_0_2_template.env"))
     subprocess.Popen(["python", "../implementation/neighborhood_monitor.py"],
                      env={

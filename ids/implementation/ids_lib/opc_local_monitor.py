@@ -264,7 +264,7 @@ class LM:
         except Exception as err:
             # Register this NM
             # Save neighborhood monitor references for internal use
-            if len(self.__neighborhood_monitors) < 2:
+            if len(self.__neighborhood_monitors) < 10:
                 opc_ref = await self.__server.nodes.objects.add_object(self.__idx, id)
                 self.__neighborhood_monitors.append({
                     "id": id,
