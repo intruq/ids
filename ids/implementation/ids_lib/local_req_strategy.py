@@ -256,8 +256,9 @@ class DEMKit_S1_Household_Grid_Balance(LocalRequirementCheckStrategy):
             meter_config = self._rtu_conf["meters"]
             data = await self._data_ref.read_value()
             temp_current = meter_current * (-1)
-
+            t = []
             for m in meter_config:
+                t.append(self.get_meter_data(data, m).current)
                 temp_current += self.get_meter_data(data, m).current
 
             if not (meter_current -1 <= temp_current <= meter_current + 1):
@@ -266,7 +267,7 @@ class DEMKit_S1_Household_Grid_Balance(LocalRequirementCheckStrategy):
                         "req_id": 1,
                         "component_id": "sensor_21"}
                     )
-                    
+                    #print(t)
                     # Report to console
                     self.logger.error("LM%s: Requirement S1 violated! sensor_21 current of %sW is not equal to produced/consumed current of the household grid: %sW",
                                 self.get_lm_id(), meter_current, temp_current)
@@ -279,7 +280,7 @@ class DEMKit_S2_Saftey_Threshold_C(LocalRequirementCheckStrategy):
         meter_config = self._rtu_conf["meters"]
         for m in meter_config:
             max_current = m["s_current"]
-            min_current = 0
+            min_current = m["s_voltage"]
             temp_current = self.get_meter_data(data, m).current
             if not (min_current <= temp_current <= max_current):
                 # Add violation to queue
@@ -288,8 +289,8 @@ class DEMKit_S2_Saftey_Threshold_C(LocalRequirementCheckStrategy):
                     "component_id": m["id"]}
                 )
                 # Report to console
-                self.logger.error("LM%s: Requirement S2 violated! Max current in %s should be > 0 and < %s but is currently %s",
-                            self.get_lm_id(), m["id"], max_current, round(temp_current, 3))
+                self.logger.error("LM%s: Requirement S2 violated! Max current in %s should be > %s and < %s but is currently %s",
+                            self.get_lm_id(), m["id"], min_current, max_current, round(temp_current, 3))
                 
 class DEMKit_S3_Battery_Overcharge(LocalRequirementCheckStrategy):
     async def check(self):
@@ -298,7 +299,7 @@ class DEMKit_S3_Battery_Overcharge(LocalRequirementCheckStrategy):
             # Get meter data from server
             # sensor_25 stores the SoC data in the "voltage-slot" and the Current data in the "current-slot"
             soc_current = await self.get_v_data("sensor_25")
-            soc_max = 12000
+            soc_max = 4000
             soc_min = 0
             battery_current = await self.get_c_data("sensor_25")
             
@@ -361,10 +362,11 @@ class DEMKit_S5_Battery_Discharge(LocalRequirementCheckStrategy):
     async def check(self):
         """Checks Requirement S5: Battery dis-/charge rate does not exceed safe operational limit."""
         if not self.get_lm_id() == 4:
+            max_current = 3750
+            min_current = -3750
+            
             # Get meter data from server
-            max_current = 3700
-            min_current = -3700
-            battery_current = await self.get_v_data("sensor_25")
+            battery_current = await self.get_c_data("sensor_25")
             
             if isinstance(battery_current, float):
                 if not (min_current <= battery_current <= max_current):

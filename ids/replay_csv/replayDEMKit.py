@@ -18,16 +18,16 @@ class Replay:
 
         # Konfiguration des Testbeds aus XML lesen
     
-        self.configs.append(load_rtu("./data/DEMKit/House-1-short.xml"))
-        self.configs.append(load_rtu("./data/DEMKit/House-4-short.xml"))
-        self.configs.append(load_rtu("./data/DEMKit/House-8-short.xml"))
+        self.configs.append(load_rtu("./data/DEMKit/House-1.xml"))
+        self.configs.append(load_rtu("./data/DEMKit/House-4.xml"))
+        self.configs.append(load_rtu("./data/DEMKit/House-8.xml"))
         self.configs.append(load_rtu("./data/DEMKit/Feeder.xml"))
         #print(self.configs)
         
 
         # CSV Dateien laden
         # vermutlich möchte ich das so anpassen, dass jede CSV Datei einzeln geladen wird, um da unterschiedliche Sachen auch skippen zu können
-        with open("./data/DEMKit/CSV-House-1-short.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-1.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -35,9 +35,9 @@ class Replay:
             csv_reader.__next__()
 
             for row in csv_reader:
-                self.scenario[0].append(row[1:11])
+                self.scenario[0].append(row[1:12])
         
-        with open("./data/DEMKit/CSV-House-4-short.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-4.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -46,9 +46,9 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[1].append(row[1:5])
+                self.scenario[1].append(row[1:6])
 
-        with open("./data/DEMKit/CSV-House-8-short.csv", "r") as csv_file:
+        with open("./data/DEMKit/CSV-House-8.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
             self.scenario.append([])
 
@@ -57,7 +57,7 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[2].append(row[1:11])
+                self.scenario[2].append(row[1:12])
 
         with open("./data/DEMKit/CSV-Feeder.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
@@ -132,7 +132,7 @@ if __name__ == '__main__':
 
     replay = Replay()
     replay.load_scenario() # lädt alle Dateien aus der CSV Datei einmal vor 
-    replay.run_scenario(10) # spielt sie ab 
+    replay.run_scenario(3) # spielt sie ab 
 
     print("finished scenario.")
     time.sleep(10)

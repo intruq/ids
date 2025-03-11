@@ -12,11 +12,10 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
 
     def __init__(self, border_regions, client_lms, vio_queue, logger):
         self.__br = border_regions
-        self.__client_lms = client_lms
+        self.client_lms = client_lms
         self.__vio_queue = vio_queue
         self.logger = logger
         self.__transformer_pos = -1
-        
         
     @abstractmethod
     def check(self): 
@@ -26,7 +25,7 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
     async def get_data_from_lm(self, i_of_lm):
         """Get the latest data values from the specified local monitor."""
         data_node = None                  
-        data_node = self.__client_lms[i_of_lm]["data_node"]
+        data_node = self.client_lms[i_of_lm]["data_node"]
         try:
             lm_data = await data_node.read_value()
         except Exception:
@@ -91,6 +90,16 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
             return sensor_data[1]
         else: 
             return []
+        
+    async def get_lm_sm_data(self):
+        data = []
+        for i in range(3):
+            sensors = await self.get_data_from_lm(i)
+            for m in sensors: 
+                if m[0] == "sensor_21": 
+                    data.append(m)
+        
+        return data
         
              
 # REQ Coteq case     
@@ -469,48 +478,64 @@ class DEMKit_NM_Test_Case(NeighbourhoodRequirementCheckStrategy):
         """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
         c1 = await self.get_c_data_from_sensor("sensor_21")
         lms = await self.get_data_from_lm(0)
-        print("Monitor1: " + str(lms))
+        #print("Monitor1: " + str(lms[0][1]))
         lms = await self.get_data_from_lm(1)
-        print("Monitor2: " +  str(lms))
+        #print("Monitor2: " +  str(lms[1][1]))
         lms = await self.get_data_from_lm(2)
-        print("Monitor3: " +  str(lms))
-        lms = await self.get_data_from_lm(3)
-        print("Monitor4: " +  str(lms))
+        print("Monitor3: " +  str(lms[2][1]))
+        #lms = await self.get_data_from_lm(3)
+        #print("Monitor4: " +  str(lms[3][1]))
     
 #REQ DEMKit case
 class DEMKit_S6_Registered_Feedin_Only(NeighbourhoodRequirementCheckStrategy):
-    print("CHECK CREATED")
+    old_smartmeter_data = [1323.0, 96.0, 1272.0] #Hardcoded first smartmeter values as to not get a violation each start
+
     async def check(self):
         """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
         sum_sm_currents = 0
-        feeder_current = await self.get_c_data_from_sensor("sensor_34")
-
+        sum_old_sm_currents = 0
+        smartmeter_data, feeder_current = await asyncio.gather(self.get_lm_sm_data(), self.get_c_data_from_sensor("sensor_34"))
+        power_flow_direction = (feeder_current >= 0)
+        irgendwas = [0, 0, 0]
+        
         # Adds the value of current measured in all smart meters
         for i in range(3):
-            sm_current = await self.get_data_from_lm(i)
-            sum_sm_currents += float(sm_current[0][1])
+            sum_sm_currents += smartmeter_data[i][1]
+            sum_old_sm_currents += self.old_smartmeter_data[i]
+            irgendwas[i] = smartmeter_data[i][1]
         
         # If neighborhood production < consumption:
-        if feeder_current >= 0:
+        if power_flow_direction:
             # If total consumption of all combined houses exceeds the feeders measurement, an alert is thrown
-            if feeder_current < sum_sm_currents:
+            if (feeder_current + 10 < sum_sm_currents) or ((feeder_current < sum_old_sm_currents) and (sum_sm_currents > sum_old_sm_currents)):
                 # Report to console
-                self.logger.error("NM: Requirement S6 violated! The current measured at the feeder (%sW) exceeds the added consumed current of the houses (%sW)", feeder_current, round(sum_sm_currents, 3))
+                print(self.old_smartmeter_data)
+                print(irgendwas)
+                self.logger.error("NM: Requirement S6 violated! Power flow: feeder(%sW) -> houses(%sW)", feeder_current, sum_sm_currents)
         # If neighborhood production < consumption:
         # If total production of all combined houses exceeds the feeders measurement, an alert is thrown
-        elif feeder_current > sum_sm_currents:
-            # Report to console
-            self.logger.error("NM: Requirement S6 violated! The current measured at the feeder (%sW) exceeds the added produced current of the houses (%sW)", feeder_current, round(sum_sm_currents, 3))
+        else:
+            if (feeder_current > sum_sm_currents + 10) or ((feeder_current > sum_old_sm_currents) and (sum_sm_currents > sum_old_sm_currents)):
+                # Report to console
+                print(self.old_smartmeter_data, feeder_current)
+                print(irgendwas)
+                self.logger.error("NM: Requirement S6 violated! Power flow: houses(%sW) -> feeder(%sW)", sum_sm_currents, feeder_current)
+        for i in range(3):
+            self.old_smartmeter_data[i] = smartmeter_data[i][1]
 
 #REQ DEMKit case
-class DEMKit_S7_Safety_Threshold_C(NeighbourhoodRequirementCheckStrategy):
+# Looks at last 10 (smart meter) values of each local monitor and checks for sudden spikes
+class DEMKit_S7_Anomaly_Power_Surge(NeighbourhoodRequirementCheckStrategy):
+    last_value = [0, 0, 0]
+    count = 0
+
     async def check(self):
         """Checks Requirement S7: Operator defined threshold of current in neighborhood is met for all meters."""
-        lm_data = []
-        sum_current = 0
+        smartmeter_data = await self.get_lm_sm_data()
+        self.count += 1
         for i in range(3):
-            lm_temp = await self.get_data_from_lm(i)
-            if lm_temp:
-                lm_data.append(lm_temp)
-                sum_current += lm_temp
-        return
+            value = smartmeter_data[i][1]
+            last = self.last_value[i]
+            if (abs(value) > (abs(last) * 7.5)) and (self.count > 3):
+                self.logger.error("NM: Requirement S7 violated! The last recorded value for LM%s was %sW, but the most recent value is %sW!", (i + 1), last, value)
+            self.last_value[i] = value

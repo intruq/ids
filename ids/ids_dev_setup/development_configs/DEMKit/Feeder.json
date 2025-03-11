@@ -41,7 +41,7 @@
             "bus_id": "b_4",
             "power_line_id": "branch_4",
             "s_current": 120000,
-            "s_voltage": 11000,
+            "s_voltage": -120000,
             "hr_index_voltage": "0",
             "hr_index_current": "0"
         }

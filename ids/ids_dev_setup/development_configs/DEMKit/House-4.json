@@ -27,7 +27,7 @@
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
-            "s_voltage": 11000,
+            "s_voltage": -12000,
             "hr_index_voltage": "0",
             "hr_index_current": "0"
         },
@@ -36,7 +36,7 @@
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
-            "s_voltage": 11000,
+            "s_voltage": -12000,
             "hr_index_voltage": "4",
             "hr_index_current": "4"
         },
@@ -45,7 +45,7 @@
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
-            "s_voltage": 11000,
+            "s_voltage": -12000,
             "hr_index_voltage": "8",
             "hr_index_current": "8"
         },
@@ -54,7 +54,7 @@
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
-            "s_voltage": 11000,
+            "s_voltage": -12000,
             "hr_index_voltage": "16",
             "hr_index_current": "12"
         }
