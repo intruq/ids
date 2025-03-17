@@ -256,10 +256,9 @@ class DEMKit_S1_Household_Grid_Balance(LocalRequirementCheckStrategy):
             meter_config = self._rtu_conf["meters"]
             data = await self._data_ref.read_value()
             temp_current = meter_current * (-1)
-            t = []
             for m in meter_config:
-                t.append(self.get_meter_data(data, m).current)
-                temp_current += self.get_meter_data(data, m).current
+                if not ("time" == m["id"]):
+                    temp_current += self.get_meter_data(data, m).current
 
             if not (meter_current -1 <= temp_current <= meter_current + 1):
                 # Add violation to queue
@@ -272,25 +271,26 @@ class DEMKit_S1_Household_Grid_Balance(LocalRequirementCheckStrategy):
                     self.logger.error("LM%s: Requirement S1 violated! sensor_21 current of %sW is not equal to produced/consumed current of the household grid: %sW",
                                 self.get_lm_id(), meter_current, temp_current)
         
-class DEMKit_S2_Saftey_Threshold_C(LocalRequirementCheckStrategy):
+class DEMKit_S2_Safety_Threshold_C(LocalRequirementCheckStrategy):
     async def check(self):
         """Checks Requirement S2: Safety threshold regarding current is met at every meter."""
         # Get meter data from server
         data = await self._data_ref.read_value()
         meter_config = self._rtu_conf["meters"]
         for m in meter_config:
-            max_current = m["s_current"]
-            min_current = m["s_voltage"]
-            temp_current = self.get_meter_data(data, m).current
-            if not (min_current <= temp_current <= max_current):
-                # Add violation to queue
-                self._vio_queue.put_nowait({
-                    "req_id": 2,
-                    "component_id": m["id"]}
-                )
-                # Report to console
-                self.logger.error("LM%s: Requirement S2 violated! Max current in %s should be > %s and < %s but is currently %s",
-                            self.get_lm_id(), m["id"], min_current, max_current, round(temp_current, 3))
+            if not ("time" == m["id"]):
+                max_current = m["s_current"]
+                min_current = m["s_voltage"]
+                temp_current = self.get_meter_data(data, m).current
+                if not (min_current <= temp_current <= max_current):
+                    # Add violation to queue
+                    self._vio_queue.put_nowait({
+                        "req_id": 2,
+                        "component_id": m["id"]}
+                    )
+                    # Report to console
+                    self.logger.error("LM%s: Requirement S2 violated! Max current in %s should be > %s and < %s but is currently %s",
+                                self.get_lm_id(), m["id"], min_current, max_current, round(temp_current, 3))
                 
 class DEMKit_S3_Battery_Overcharge(LocalRequirementCheckStrategy):
     async def check(self):
@@ -345,18 +345,19 @@ class DEMKit_S4_Feedin_Only_Generators(LocalRequirementCheckStrategy):
             data = await self._data_ref.read_value()
             meter_config = self._rtu_conf["meters"]
             for m in meter_config:
-                d = self.get_meter_data(data, m)
-                temp_current = d.current
-                if temp_current < 0 and not (m["id"] in generators):
-                    # Add violation to queue
-                    self._vio_queue.put_nowait({
-                        "req_id": 4,
-                        "component_id": m["id"]}
-                    )
+                if not ("time" == m["id"]):
+                    d = self.get_meter_data(data, m)
+                    temp_current = d.current
+                    if temp_current < 0 and not (m["id"] in generators):
+                        # Add violation to queue
+                        self._vio_queue.put_nowait({
+                            "req_id": 4,
+                            "component_id": m["id"]}
+                        )
 
-                    # Report to console
-                    self.logger.error("LM%s: Requirement S4 violated! Current of %s should be > 0 but is currently %s.",
-                                self.get_lm_id(), m["id"], round(temp_current, 3))
+                        # Report to console
+                        self.logger.error("LM%s: Requirement S4 violated! Current of %s should be > 0 but is currently %s.",
+                                    self.get_lm_id(), m["id"], round(temp_current, 3))
 
 class DEMKit_S5_Battery_Discharge(LocalRequirementCheckStrategy):
     async def check(self):

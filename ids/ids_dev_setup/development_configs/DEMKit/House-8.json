@@ -37,16 +37,16 @@
     ],
     "meters": [
         {
-            "id": "sensor_21",
-            "bus_id": "b_3",
+            "id": "time",
+            "bus_id": "b_2",
             "power_line_id": "branch_2",
-            "s_current": 12000,
-            "s_voltage": -12000,
+            "s_current": 0,
+            "s_voltage": 0,
             "hr_index_voltage": "0",
             "hr_index_current": "0"
         },
         {
-            "id": "sensor_22",
+            "id": "sensor_21",
             "bus_id": "b_3",
             "power_line_id": "branch_2",
             "s_current": 12000,
@@ -55,16 +55,16 @@
             "hr_index_current": "4"
         },
         {
-            "id": "sensor_23",
+            "id": "sensor_22",
             "bus_id": "b_3",
-            "power_line_id": "branch_3",
+            "power_line_id": "branch_2",
             "s_current": 12000,
             "s_voltage": -12000,
             "hr_index_voltage": "8",
             "hr_index_current": "8"
         },
         {
-            "id": "sensor_24",
+            "id": "sensor_23",
             "bus_id": "b_3",
             "power_line_id": "branch_3",
             "s_current": 12000,
@@ -73,13 +73,22 @@
             "hr_index_current": "12"
         },
         {
+            "id": "sensor_24",
+            "bus_id": "b_3",
+            "power_line_id": "branch_3",
+            "s_current": 12000,
+            "s_voltage": -12000,
+            "hr_index_voltage": "16",
+            "hr_index_current": "16"
+        },
+        {
             "id": "sensor_25",
             "bus_id": "b_3",
             "power_line_id": "branch_3",
             "s_current": 12000,
             "s_voltage": -12000,
-            "hr_index_voltage": "20",
-            "hr_index_current": "16"
+            "hr_index_voltage": "24",
+            "hr_index_current": "20"
         },
         {
             "id": "sensor_29",
@@ -87,8 +96,8 @@
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": -12000,
-            "hr_index_voltage": "28",
-            "hr_index_current": "24"
+            "hr_index_voltage": "32",
+            "hr_index_current": "28"
         },
         {
             "id": "sensor_31",
@@ -96,8 +105,8 @@
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": -12000,
-            "hr_index_voltage": "36",
-            "hr_index_current": "32"
+            "hr_index_voltage": "40",
+            "hr_index_current": "36"
         },
         {
             "id": "sensor_33",
@@ -105,8 +114,8 @@
             "power_line_id": "branch_4",
             "s_current": 12000,
             "s_voltage": -12000,
-            "hr_index_voltage": "40",
-            "hr_index_current": "40"
+            "hr_index_voltage": "44",
+            "hr_index_current": "44"
         }
     ]
 }

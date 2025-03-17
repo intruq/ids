@@ -35,7 +35,7 @@ class Replay:
             csv_reader.__next__()
 
             for row in csv_reader:
-                self.scenario[0].append(row[1:12])
+                self.scenario[0].append(row[0:12])
         
         with open("./data/DEMKit/CSV-House-4.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
@@ -46,7 +46,7 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[1].append(row[1:6])
+                self.scenario[1].append(row[0:6])
 
         with open("./data/DEMKit/CSV-House-8.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
@@ -57,7 +57,7 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[2].append(row[1:12])
+                self.scenario[2].append(row[0:12])
 
         with open("./data/DEMKit/CSV-Feeder.csv", "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=";")
@@ -68,7 +68,7 @@ class Replay:
 
             for row in csv_reader:
                 #print(row[1:10])
-                self.scenario[3].append(row[1:2])
+                self.scenario[3].append(row[0:2])
 
         # Datablock erstellen
         for i in [0, 1, 2, 3]:

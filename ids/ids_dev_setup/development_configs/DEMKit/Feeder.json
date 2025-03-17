@@ -37,13 +37,22 @@
     ],
     "meters": [
         {
+            "id": "time",
+            "bus_id": "b_4",
+            "power_line_id": "branch_4",
+            "s_current": 0,
+            "s_voltage": 0,
+            "hr_index_voltage": "0",
+            "hr_index_current": "0"
+        },
+        {
             "id": "sensor_34",
             "bus_id": "b_4",
             "power_line_id": "branch_4",
             "s_current": 120000,
             "s_voltage": -120000,
-            "hr_index_voltage": "0",
-            "hr_index_current": "0"
+            "hr_index_voltage": "4",
+            "hr_index_current": "4"
         }
     ]
 }

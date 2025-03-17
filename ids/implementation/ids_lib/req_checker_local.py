@@ -46,7 +46,7 @@ class ReqCheckerLocal:
             demkit_case_1 = DEMKit_S1_Household_Grid_Balance(rtu_config, data_ref, violations_queue, logger)
             self.LocalReqConfiguration.add_check(demkit_case_1)
 
-            demkit_case_2 = DEMKit_S2_Saftey_Threshold_C(rtu_config, data_ref, violations_queue, logger)
+            demkit_case_2 = DEMKit_S2_Safety_Threshold_C(rtu_config, data_ref, violations_queue, logger)
             self.LocalReqConfiguration.add_check(demkit_case_2)
 
             demkit_case_3 = DEMKit_S3_Battery_Overcharge(rtu_config, data_ref, violations_queue, logger)

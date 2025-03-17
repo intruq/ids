@@ -23,16 +23,16 @@
     ],
     "meters": [
         {
-            "id": "sensor_21",
+            "id": "time",
             "bus_id": "b_2",
             "power_line_id": "branch_2",
-            "s_current": 12000,
-            "s_voltage": -12000,
+            "s_current": 0,
+            "s_voltage": 0,
             "hr_index_voltage": "0",
             "hr_index_current": "0"
         },
         {
-            "id": "sensor_22",
+            "id": "sensor_21",
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
@@ -41,7 +41,7 @@
             "hr_index_current": "4"
         },
         {
-            "id": "sensor_23",
+            "id": "sensor_22",
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
@@ -50,13 +50,22 @@
             "hr_index_current": "8"
         },
         {
+            "id": "sensor_23",
+            "bus_id": "b_2",
+            "power_line_id": "branch_2",
+            "s_current": 12000,
+            "s_voltage": -12000,
+            "hr_index_voltage": "12",
+            "hr_index_current": "12"
+        },
+        {
             "id": "sensor_27",
             "bus_id": "b_2",
             "power_line_id": "branch_2",
             "s_current": 12000,
             "s_voltage": -12000,
-            "hr_index_voltage": "16",
-            "hr_index_current": "12"
+            "hr_index_voltage": "20",
+            "hr_index_current": "16"
         }
     ]
 }

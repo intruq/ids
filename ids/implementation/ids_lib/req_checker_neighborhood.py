@@ -52,8 +52,8 @@ class ReqCheckerNeighborhood:
             #demkit_nm_test_case = DEMKit_NM_Test_Case(border_regions, client_lms, vio_queue, logger)
             #self.NeighbourhoodReqConfiguration.add_check(demkit_nm_test_case)
 
-            #demkit_nm_case_6 = DEMKit_S6_Registered_Feedin_Only(border_regions, client_lms, vio_queue, logger)
-            #self.NeighbourhoodReqConfiguration.add_check(demkit_nm_case_6)
+            demkit_nm_case_6 = DEMKit_S6_Registered_Feedin_Only(border_regions, client_lms, vio_queue, logger)
+            self.NeighbourhoodReqConfiguration.add_check(demkit_nm_case_6)
 
             demkit_nm_case_7 = DEMKit_S7_Anomaly_Power_Surge(border_regions, client_lms, vio_queue, logger)
             self.NeighbourhoodReqConfiguration.add_check(demkit_nm_case_7)

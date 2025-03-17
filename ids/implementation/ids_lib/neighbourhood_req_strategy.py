@@ -96,7 +96,7 @@ class NeighbourhoodRequirementCheckStrategy(ABC):
         for i in range(3):
             sensors = await self.get_data_from_lm(i)
             for m in sensors: 
-                if m[0] == "sensor_21": 
+                if m[0] == "sensor_21":
                     data.append(m)
         
         return data
@@ -488,40 +488,34 @@ class DEMKit_NM_Test_Case(NeighbourhoodRequirementCheckStrategy):
     
 #REQ DEMKit case
 class DEMKit_S6_Registered_Feedin_Only(NeighbourhoodRequirementCheckStrategy):
-    old_smartmeter_data = [1323.0, 96.0, 1272.0] #Hardcoded first smartmeter values as to not get a violation each start
-
     async def check(self):
-        """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""
-        sum_sm_currents = 0
-        sum_old_sm_currents = 0
-        smartmeter_data, feeder_current = await asyncio.gather(self.get_lm_sm_data(), self.get_c_data_from_sensor("sensor_34"))
+        """Checks Requirement S6: Only registered houses (or power generators) are feeding into the grid."""        
+        lm1_data = await self.get_data_from_lm(0)
+        lm2_data = await self.get_data_from_lm(1)
+        lm3_data = await self.get_data_from_lm(2)
+        lm4_data = await self.get_data_from_lm(3)
+
+        lm1_time = lm1_data[0][1]
+        lm2_time = lm2_data[0][1]
+        lm3_time = lm3_data[0][1]
+        feeder_time = lm4_data[0][1]
+
+        sum_sm_currents = float(lm1_data[1][1]) + float(lm2_data[1][1]) + float(lm3_data[1][1])
+        feeder_current = float(lm4_data[1][1])
         power_flow_direction = (feeder_current >= 0)
-        irgendwas = [0, 0, 0]
-        
-        # Adds the value of current measured in all smart meters
-        for i in range(3):
-            sum_sm_currents += smartmeter_data[i][1]
-            sum_old_sm_currents += self.old_smartmeter_data[i]
-            irgendwas[i] = smartmeter_data[i][1]
-        
+        print(sum_sm_currents, feeder_current)
         # If neighborhood production < consumption:
         if power_flow_direction:
             # If total consumption of all combined houses exceeds the feeders measurement, an alert is thrown
-            if (feeder_current + 10 < sum_sm_currents) or ((feeder_current < sum_old_sm_currents) and (sum_sm_currents > sum_old_sm_currents)):
+            if (feeder_current + 10 < sum_sm_currents) and lm1_time == lm2_time == lm3_time == feeder_time:
                 # Report to console
-                print(self.old_smartmeter_data)
-                print(irgendwas)
                 self.logger.error("NM: Requirement S6 violated! Power flow: feeder(%sW) -> houses(%sW)", feeder_current, sum_sm_currents)
         # If neighborhood production < consumption:
         # If total production of all combined houses exceeds the feeders measurement, an alert is thrown
         else:
-            if (feeder_current > sum_sm_currents + 10) or ((feeder_current > sum_old_sm_currents) and (sum_sm_currents > sum_old_sm_currents)):
+            if (feeder_current > sum_sm_currents + 10) and lm1_time == lm2_time == lm3_time == feeder_time:
                 # Report to console
-                print(self.old_smartmeter_data, feeder_current)
-                print(irgendwas)
                 self.logger.error("NM: Requirement S6 violated! Power flow: houses(%sW) -> feeder(%sW)", sum_sm_currents, feeder_current)
-        for i in range(3):
-            self.old_smartmeter_data[i] = smartmeter_data[i][1]
 
 #REQ DEMKit case
 # Looks at last 10 (smart meter) values of each local monitor and checks for sudden spikes

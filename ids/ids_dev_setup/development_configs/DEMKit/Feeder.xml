@@ -8,8 +8,10 @@
         <version major="0" minor="5" />
     </identity>
     <!-- Sensors  -->
-    <reg type="hr" index="0" label="sensor_21" dt="64bit_float">0</reg><!-- Feeder: W-power.real.c.ELECTRICITY  -->
+    <reg type="hr" index="0" label="time" dt="64bit_float">0</reg><!-- Feeder: time  -->
+    <reg type="hr" index="4" label="sensor_34" dt="64bit_float">0</reg><!-- Feeder: W-power.real.c.ELECTRICITY  -->
     <!-- Max Sensors -->
-    <reg type="hr" index="4" label="max_c_21" dt="64bit_float">0</reg>
+    <reg type="hr" index="8" label="max_time" dt="64bit_float">0</reg>
+    <reg type="hr" index="12" label="max_c_34" dt="64bit_float">0</reg>
     <code>mosaikrtu/conf/rtu_logic_good.py</code>
 </DVCD>
